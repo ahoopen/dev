@@ -1,0 +1,21 @@
+<script type="text/javascript" src="../libs/require.js"></script>
+<script type="text/javascript" src="../libs/jquery.js"></script>
+<script type="text/javascript">
+
+	require(['Resource'], function($resource) {
+		$resource = new $resource();
+		
+		$resource.image('http://devcontent1.rijksweb.nl/cis/content/media/rijksportaal/gedeeldemedia/demo/10.jpg', {
+			width: 75,
+			height: 75,
+			success: function() {
+				console.log('image geladen');
+			},
+			failure: function() {
+				console.log('image fout');
+			}
+		});
+	});
+
+
+</script>
