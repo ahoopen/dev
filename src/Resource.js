@@ -6,6 +6,8 @@ define(["Application"], function(app) {
 
 	$resource.prototype = {
 
+		images : [],
+
 		/**
 		* Maakt een afbeelding.
 		*
@@ -15,11 +17,18 @@ define(["Application"], function(app) {
 		* @returns {boolean} true wanneer 'value' undefined is
 		**/
 		image : function(src, options) {
+			var img = new Image();
+
+			if( img.complete && img.naturalWidth !== undefined ) {
+
+			}
+
+
 
 			//
 			forEach(options, function(option) {
 				if( this.$element.isObject(option) ) {
-					
+
 				} else if( this.$element.isFunction(option) ) {
 
 				}
