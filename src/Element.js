@@ -139,14 +139,21 @@ define("element", function() {
 			var has = Object.prototype.hasOwnProperty;
 
 			// null en undefined zijn "empty"
-			if(obj == null) return true;
+			if(obj == null) {
+				return true;
+			}
 
-
-			if(obj.length && obj.length > 0) return false;
-			if(obj.length === 0) return true;
+			if(obj.length && obj.length > 0) {
+				return false;
+			}
+			if(obj.length === 0) {
+				return true;
+			}
 
 			for( var key in obj) {
-				if( has.call(obj, key)) return false;
+				if( has.call(obj, key)) {
+					return false;
+				}
 			}
 
 			return true;
@@ -165,27 +172,32 @@ define("element", function() {
 		},
 
 		indexOf : function(array, obj) {
-			if( array.indexOf ) return array.indexOf(obj);
+			if( array.indexOf ) {
+				return array.indexOf(obj);
+			}
 
 			for (var i = 0; i < array.length; i++) {
-				if (obj === array[i]) return i;
+				if (obj === array[i]) {
+					return i;
+				}
 			}
 			return -1;
 		},
 
 		isArrayLike : function( obj ) {
-		  if (!obj || (typeof obj.length !== 'number')) return false;
+			if (!obj || (typeof obj.length !== 'number')) {
+				return false;
+			}
 
-		  // We have on object which has length property. Should we treat it as array?
-		  if (typeof obj.hasOwnProperty != 'function' &&
-		      typeof obj.constructor != 'function') {
-		    // This is here for IE8: it is a bogus object treat it as array;
-		    return true;
-		  } else {
-		    return (jQuery && obj instanceof jQuery) || // jQuery
-		           typeof obj.callee === 'function'; // arguments (on IE8 looks like regular obj)
-		  }
-		  // toString.call(obj) !== '[object Object]' || // some browser native object
+			// We have on object which has length property. Should we treat it as array?
+			if (typeof obj.hasOwnProperty !== 'function' &&
+				typeof obj.constructor !== 'function') {
+				// This is here for IE8: it is a bogus object treat it as array;
+				return true;
+			} else {
+				return (jQuery && obj instanceof jQuery) || // jQuery
+					typeof obj.callee === 'function'; // arguments (on IE8 looks like regular obj)
+			}
 		},
 
 		/**
@@ -195,7 +207,7 @@ define("element", function() {
 		*
 		* @name $element.forEach
 		* @function
-	 	* @param {Object|Array} obj Object to iterate over.
+		* @param {Object|Array} obj Object to iterate over.
 		* @param {Function} iterator Iterator function.
 		* @param {Object} context Object to become context (`this`) for the iterator function.
 		* @returns {number} de grootte van het 'obj'
@@ -206,7 +218,7 @@ define("element", function() {
 			if ( obj ) {
 				if ( this.isFunction( obj) ) {
 					for( key in obj ) {
-						if ( key != 'prototype' && key != 'length' && key != 'name' && obj.hasOwnProperty(key) ) {
+						if ( key !== 'prototype' && key !== 'length' && key !== 'name' && obj.hasOwnProperty(key) ) {
 							iterator.call(context, obj[key], key);
 						}
 					}

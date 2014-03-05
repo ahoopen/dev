@@ -1,6 +1,8 @@
 var should = require('should');
+//global.requirejs = require('requirejs');
 
-var define = require("../libs/require");
+
+
 /*
 requirejs.config({
     baseUrl: '.',

@@ -1,6 +1,5 @@
 define(["Element"], function($element) {
-	
-	
+		
 	var $resource = function(Element) {
 		
 	};
@@ -14,7 +13,7 @@ define(["Element"], function($element) {
 		* @function
 		* @param {string} src image src
 		* @returns {boolean} true wanneer 'value' undefined is
-		**/
+		*
 		image : function(src, options) {
 			var img = $(src);
 

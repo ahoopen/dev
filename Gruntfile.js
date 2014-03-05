@@ -28,6 +28,7 @@ module.exports = function(grunt) {
           describe: true,
           expect: true,
           module: true,
+          jQuery: true,
           console: true,
           it: true,
           $: true,
@@ -58,7 +59,8 @@ module.exports = function(grunt) {
           require: 'reports/coverage/blanket'
         },
         src: ['tests/**/*.js']
-      },
+      }
+      /*,
       'html-cov': {
         options: {
           reporter: 'html-cov',
@@ -68,14 +70,18 @@ module.exports = function(grunt) {
           // output (the quiet option does not suppress this)
           captureFile: 'reports/coverage.html'
         },
-        src: ['tests/**/*.js']
-      },
+        */
+        //src: ['tests/**/*.js']
+      /* },
+
+      
       'travis-cov' : {
       	options : {
       		reporter: 'travis-cov'
       	},
-      	src : ['tests/**/*.js']
-      }
+        */
+      	//src : ['tests/**/*.js']
+      //}
     },
 
     watch: {
