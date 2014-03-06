@@ -29,7 +29,7 @@ define( function() {
 					} else if (typeof arg === 'undefined') {
 						return 'undefined';
 					} else if (typeof arg !== 'string') {
-	  					return JSON.stringify(arg);
+						return	JSON.stringify(arg);
 					}
 					return arg;
 				}

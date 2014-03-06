@@ -34,7 +34,7 @@ define( ["Element", "Error"], function($element, $error) {
 			last = fn.length - 1;
 			$inject = fn.slice(0, last);
 		} else {
-
+			//
 		}
 
 		return $inject;
@@ -60,7 +60,7 @@ define( ["Element", "Error"], function($element, $error) {
 			}
 
 			args.push( 
-
+				key
 			);
 		}
 
@@ -78,15 +78,12 @@ define( ["Element", "Error"], function($element, $error) {
 	* @param {Object} obj Object om te kijken
 	* @returns {int} de positie van de gevonden object in de array 
 	**/
-	var loadModules = function() {
+	var loadModules = function(modules) {
 		
-		$element.forEach(modules, function(module) {
-			
-			invoke(module);
-		})
-
 		try {
-
+			$element.forEach(modules, function(module) {
+				invoke(module);
+			});
 		} catch (e) {
 			if ($element.isArray(module)) {
 				module = module[module.length - 1];
@@ -104,6 +101,15 @@ define( ["Element", "Error"], function($element, $error) {
 		}
 	};
 
+	/**
+	*
+	* @name $module.bootstrap
+	* @function
+	**/
+	var bootstrap = function(modules) {
+		modules = modules || [];
+	};
+
 	var Login = function($session, authenticator) {
 
 	};
@@ -111,7 +117,7 @@ define( ["Element", "Error"], function($element, $error) {
 	/**
 	app.module( 'test', function() {
 
-		var Login = function($entity, authenticator) {
+		var Login = function($entity, $authenticator) {
 
 		};
 
