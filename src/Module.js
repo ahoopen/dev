@@ -108,11 +108,17 @@ define( ["Element", "Error"], function($element, $error) {
 	**/
 	var bootstrap = function(modules) {
 		modules = modules || [];
+
+		$element.forEach(modules, function(module) {
+			
+		});
 	};
 
 	var Login = function($session, authenticator) {
 
 	};
+
+
 
 	/**
 	app.module( 'test', function() {

@@ -1,9 +1,10 @@
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-notify');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.initConfig({
     
@@ -16,6 +17,10 @@ module.exports = function(grunt) {
         latedef: true,
         newcap: true,
         noarg: true,
+        /* mixed tabs toestaan */
+        "-W099": true,
+        /* toe staan om parameter aan een exception toe te voegen  */
+        "-W022": true,
         sub: true,
         undef: true,
         boss: true,
@@ -37,51 +42,24 @@ module.exports = function(grunt) {
       }
     },
 
+    notify_hooks: {
+      options: {
+        enabled: true,
+        max_jshint_notifications: 8, // maximum number of notifications from jshint output
+        title: "Ontwikkel" // defaults to the name in package.json, or will use project directory's name
+      }
+    },
 
     /**
-    * JavaScript unit testing
+    * Javascript unit testing.
+    *
     **/
-    mochaTest: {
-      test: {
-        options: {
-          reporter: 'spec',
-          ui: 'bdd',
-          clearRequireCache: true,
-          // Require blanket wrapper here to instrument other required
-          // files on the fly. 
-          //
-          // NB. We cannot require blanket directly as it
-          // detects that we are not running mocha cli and loads differently.
-          //
-          // NNB. As mocha is 'clever' enough to only run the tests once for
-          // each file the following coverage task does not actually run any
-          // tests which is why the coverage instrumentation has to be done here
-          require: 'reports/coverage/blanket'
-        },
-        src: ['tests/**/*.js']
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        background: true,
+        autoWatch: false
       }
-      /*,
-      'html-cov': {
-        options: {
-          reporter: 'html-cov',
-          // use the quiet flag to suppress the mocha console output
-          quiet: true,
-          // specify a destination file to capture the mocha
-          // output (the quiet option does not suppress this)
-          captureFile: 'reports/coverage.html'
-        },
-        */
-        //src: ['tests/**/*.js']
-      /* },
-
-      
-      'travis-cov' : {
-      	options : {
-      		reporter: 'travis-cov'
-      	},
-        */
-      	//src : ['tests/**/*.js']
-      //}
     },
 
     watch: {
@@ -90,7 +68,12 @@ module.exports = function(grunt) {
           spawn: false,
         },
         files: ['<%= jshint.src %>','src/**/*.js'],
-        tasks: ['jshint', 'mochaTest']
+        tasks: ['jshint']
+      },
+
+      karma : {
+        files: ['src/**/*.js', 'tests/**/*.js'],
+        tasks: ['karma:unit:run']
       }
     },
 
@@ -106,7 +89,5 @@ module.exports = function(grunt) {
 
   });
 	
-  grunt.registerTask('build', ['mochaTest']);
-  grunt.registerTask('default', ['mochaTest', 'watch:js']);
-
+  grunt.registerTask('build', ['notify_hooks', 'karma:unit:start', 'watch']);
 }

@@ -1,29 +1,30 @@
-var should = require('should');
-var car = require("../src/car.js");
-var assert = require("assert")
 
-var mycar = new car({
-    name : "Vitz",
-    engineSize : 1000
+define(['car', 'jquery'], function(Auto, $) {
+
+    describe('Auto', function() {
+
+        var mycar;
+
+        it('init car classe', function() {
+            
+            mycar = new Auto({
+                name : "Vitz",
+                engineSize : 1000
+            });
+        });
+
+        it('Moet 4 wielen hebben.', function() {
+            expect(mycar.getWheels()).toBe(4);
+        });
+
+        it('Moet een engine van 1000pk hebben.', function() {
+            expect(mycar.getEngineSize()).toBe(1000);
+        });
+
+        it('Moet een blauwe kleur hebben.', function() {
+            expect(mycar.getColour()).toBe('blauw23');
+        })
+
+    });
+
 });
-
-
-describe('#Car()', function() {
-    it('Car enginesize method test', function() {
-        mycar.getEngineSize().should.equal(1000);
-
-    })
-})
-
-describe('#Car()', function() {
-	it('should have wheels', function() {
-		mycar.getWheels().should.equal(4);
-	})
-})
-
-describe('#Car()', function() {
-    it('Car name test', function() {
-        mycar.name.should.equal('Vitz');
-
-    })
-})
