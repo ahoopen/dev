@@ -17,6 +17,10 @@
     "karma-requirejs": "~0.2.1",
     "karma-coverage": "~0.2.1",
     "grunt-karma": "~0.8.2",
-    "grunt-notify": "~0.2.20"
+    "grunt-notify": "~0.2.20",
+    "jshint-stylish": "~0.1.5",
+    "karma-growler-reporter": "0.0.1",
+    "growly": "~1.1.1",
+    "grunt-plato": "~1.0.0"
   }
 }

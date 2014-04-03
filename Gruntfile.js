@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-plato');
 
   grunt.initConfig({
     
@@ -46,7 +47,17 @@ module.exports = function(grunt) {
       options: {
         enabled: true,
         max_jshint_notifications: 8, // maximum number of notifications from jshint output
-        title: "Ontwikkel" // defaults to the name in package.json, or will use project directory's name
+        title: "Project Name" // defaults to the name in package.json, or will use project directory's name
+      }
+    },
+
+    notify: {
+      plato: {
+        options: {
+          enabled: true,
+          title : "Quality check",
+          message : 'code analyse succesvol afgerond.'
+        }
       }
     },
 
@@ -59,6 +70,14 @@ module.exports = function(grunt) {
         configFile: 'karma.conf.js',
         background: true,
         autoWatch: false
+      }
+    },
+
+    plato : {
+      test : {
+        files : {
+          'reports' : ['src/**/*.js']
+        }
       }
     },
 
@@ -75,19 +94,12 @@ module.exports = function(grunt) {
         files: ['src/**/*.js', 'tests/**/*.js'],
         tasks: ['karma:unit:run']
       }
-    },
-
-
-	jsdoc : {
-        dist : {
-            src: ['src/*.js', 'tests/*.js'], 
-            options: {
-                destination: 'doc'
-            }
-        }
     }
+
 
   });
 	
-  grunt.registerTask('build', ['notify_hooks', 'karma:unit:start', 'watch']);
+  grunt.registerTask('dev', [ 'karma:unit:start', 'watch']);
+  grunt.registerTask('quality', ['plato:test', 'notify:plato']);
+  grunt.registerTask('build', []);
 }

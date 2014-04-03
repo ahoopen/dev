@@ -9,7 +9,7 @@ define(function() {
 
 	Car.prototype.getEngineSize = function() {
 		var test = {};
-		test.lala = 2;
+		test.lala = 7;
 	    return this.engineSize;
 	};
 
@@ -21,11 +21,18 @@ define(function() {
 	};
 
 	Car.prototype.start = function() {
-		if(this.fuel == 0 ) {
+		if(this.fuel === 0 ) {
 			return false;
 		}
 
+		this.isRunning = true;
 		return true;
+	}
+
+	Car.prototype.break = function() {
+		if( this.isRunning ) {
+			this.isRunning = false;
+		}
 	};
 
 	return Car;
