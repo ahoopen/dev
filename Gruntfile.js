@@ -3,9 +3,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-plato');
+
+
 
   grunt.initConfig({
     
@@ -58,6 +62,55 @@ module.exports = function(grunt) {
           title : "Quality check",
           message : 'code analyse succesvol afgerond.'
         }
+      },
+      build : {
+        options: {
+          title : "Build succesfull",
+          message : "application build completed succesfull"
+        }
+      }
+    },
+
+    clean : {
+      build : {
+        src : ['dist/*']
+      }
+    },
+
+    cssmin : {
+      build : {
+        files : {
+          'dist/application.css' : ['assets/**/*.css']
+        }
+      }
+    },
+
+    requirejs : {
+      options : {
+        baseUrl: "./"
+      },
+      // infrastructure minification
+      infrastructure : {
+        options : {
+          paths : {
+              "project" : "./"
+          },
+          name : "build.infrastructure",
+          out : "dist/infrastructure.build.min.js"
+        }
+      },
+      // project minification
+      project : {
+        options : {
+            paths : {
+                "project" : "./"
+            },
+            name : "build.project",
+            exclude : [
+              "build.infrastructure"
+            ],
+            out : "dist/project.build.min.js"
+        }
       }
     },
 
@@ -101,5 +154,12 @@ module.exports = function(grunt) {
 	
   grunt.registerTask('dev', [ 'karma:unit:start', 'watch']);
   grunt.registerTask('quality', ['plato:test', 'notify:plato']);
-  grunt.registerTask('build', []);
+  
+  grunt.registerTask('build', [
+    'clean',
+    'cssmin',
+    'requirejs:infrastructure',
+    'requirejs:project',
+    'notify:build'
+  ]);
 }

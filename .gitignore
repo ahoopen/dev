@@ -2,6 +2,8 @@
 # GRUNT
 ################
 node_modules
+coverage
+reports
 
 #################
 ## Eclipse

@@ -3,7 +3,7 @@ define(function() {
 	var Car = function(config) {
 	    this.name = config.name;
 	    this.engineSize = config.engineSize;
-	    this.wheels = 4;
+	    this.wheels = 3;
 	    this.fuel = 100;
 	};
 
@@ -27,7 +27,7 @@ define(function() {
 
 		this.isRunning = true;
 		return true;
-	}
+	};
 
 	Car.prototype.break = function() {
 		if( this.isRunning ) {

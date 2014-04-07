@@ -20,12 +20,13 @@ define(["Application"], function(app) {
 			var img = new Image();
 
 			if( img.complete && img.naturalWidth !== undefined ) {
-
+				//
 			}
 
 
 
 			//
+			/*
 			forEach(options, function(option) {
 				if( this.$element.isObject(option) ) {
 
@@ -33,6 +34,7 @@ define(["Application"], function(app) {
 
 				}
 			});
+			*/
 		}
 	};
 });
