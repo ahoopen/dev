@@ -3,7 +3,7 @@ define(function() {
 	var Car = function(config) {
 	    this.name = config.name;
 	    this.engineSize = config.engineSize;
-	    this.wheels = 3;
+	    this.wheels = 4;
 	    this.fuel = 100;
 	};
 

@@ -1,21 +1,14 @@
-<script type="text/javascript" src="../libs/require.js"></script>
-<script type="text/javascript" src="../libs/jquery.js"></script>
-<script type="text/javascript">
+<html>
+    <title>Welcome</title>
+    <body>
 
-	require(['Element', 'Resource'], function($element, $resource) {
-		$resource = new $resource();
-		
-		$resource.image('http://devcontent1.rijksweb.nl/cis/content/media/rijksportaal/gedeeldemedia/demo/10.jpg', {
-			width: 75,
-			height: 75,
-			success: function() {
-				console.log('image geladen');
-			},
-			failure: function() {
-				console.log('image fout');
-			}
-		});
-	});
+        <ul id="foldertree"></ul>
 
+        <video controls>
+            <source src="movie.mp4" type="video/mp4"/>
 
-</script>
+            <!-- fallback -->
+            Your browser does not support the <code>video</code> element.
+        </video>
+    </body>
+</html>

@@ -68,6 +68,12 @@ module.exports = function(grunt) {
           title : "Build succesfull",
           message : "application build completed succesfull"
         }
+      },
+      dev : {
+        options : {
+          title : "Dev",
+          message : "Development environment started"
+        }
       }
     },
 
@@ -152,9 +158,23 @@ module.exports = function(grunt) {
 
   });
 	
-  grunt.registerTask('dev', [ 'karma:unit:start', 'watch']);
-  grunt.registerTask('quality', ['plato:test', 'notify:plato']);
+  grunt.registerTask('dev', [ 
+    'karma:unit:start',
+    'watch',
+    'notify:dev'
+  ]);
   
+  /**
+  * Genereert een code kwaliteit report 
+  **/
+  grunt.registerTask('quality', [
+    'plato:test', 
+    'notify:plato'
+  ]);
+  
+  /**
+  * 
+  **/
   grunt.registerTask('build', [
     'clean',
     'cssmin',
