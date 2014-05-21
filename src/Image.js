@@ -1,7 +1,7 @@
-define( [""], function(app) {
+define( ["Application", "Resource"], function(app, Resource) {
 	
-	var $image = function() {
-
+	var $image = function(img) {
+		this.img = img;
 	};
 
 
@@ -11,6 +11,24 @@ define( [""], function(app) {
 			//
 		},
 
+		check : function() {
+			/*
+			var resource = cache[ this.img.src ] || new Resource(this.img.src);
+			if( resource.isConfirmed ) {
+				// cache gebruikt
+				return;
+			}
+
+			//
+			if( this.img.complete && this.img.naturalWidth !== undefined ) {
+
+				return;
+			}
+			*/
+
+
+		},
+
 		create : function(src, options) {
 
 		},
@@ -18,6 +36,14 @@ define( [""], function(app) {
 		resize : ['$entity', '$router', function($entity, $router) {
 
 		}],
+
+		progress : function() {
+
+		},
+
+		complete : function() {
+
+		},
 
 		/**
 		* Behoudt de aspect ratio van het orgineel. Handig bij het verkleinen/vergroten

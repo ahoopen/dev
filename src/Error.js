@@ -1,5 +1,7 @@
 define( function() {
 
+	'use strict';
+
 	function minErr(module) {
 		return function () {
 			var code = arguments[0],
