@@ -1,3 +1,4 @@
+
 define(['car', 'jquery'], function(Auto, $) {
 
     describe('Auto', function() {
@@ -22,11 +23,7 @@ define(['car', 'jquery'], function(Auto, $) {
 
         it('Moet een blauwe kleur hebben.', function() {
             expect(mycar.getColour()).toBe('blauw23');
-        });
-
-        it('Kan de pagina aanroepen', function() {
-            
-        });
+        })
 
     });
 

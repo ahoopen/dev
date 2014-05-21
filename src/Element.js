@@ -1,4 +1,4 @@
-define(function() {
+define("element", function() {
 
 	var $element = function() {
 

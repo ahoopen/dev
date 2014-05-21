@@ -1,14 +1,21 @@
-<html>
-    <title>Welcome</title>
-    <body>
+<script type="text/javascript" src="../libs/require.js"></script>
+<script type="text/javascript" src="../libs/jquery.js"></script>
+<script type="text/javascript">
 
-        <ul id="foldertree"></ul>
+	require(['Element', 'Resource'], function($element, $resource) {
+		$resource = new $resource();
+		
+		$resource.image('http://devcontent1.rijksweb.nl/cis/content/media/rijksportaal/gedeeldemedia/demo/10.jpg', {
+			width: 75,
+			height: 75,
+			success: function() {
+				console.log('image geladen');
+			},
+			failure: function() {
+				console.log('image fout');
+			}
+		});
+	});
 
-        <video controls>
-            <source src="movie.mp4" type="video/mp4"/>
 
-            <!-- fallback -->
-            Your browser does not support the <code>video</code> element.
-        </video>
-    </body>
-</html>
+</script>
