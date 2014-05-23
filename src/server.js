@@ -7,21 +7,49 @@ var fs = require('fs'),
 
     var file = require('./file');
     var folder = require('./folder');
+    var address = require('./address');
 
 var express = require('express');
 var app = express();
 
 var $folder = new folder.folder();
 var $file = new file.file();
+var $address = new address.address();
 
-var currentPath = __dirname + "/files/";
+var currentPath = __dirname + "/files";
+var defaultPath = __dirname + "/files/";
+// zet het begin pad
+$address.set(currentPath);
+
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded()); // to support URL-encoded bodies
+
+app.get('/path', function(request, response) {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.writeHead(200);
+    response.write( JSON.stringify( $address.set(currentPath) ) );
+    response.end();
+});
+
+app.post('/goto', function(request, response) {
+    var directory = request.body.path;
+    currentPath = directory;
+    $address.set(directory) 
+
+    $folder.open( directory, function(files) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.writeHead(200);
+        response.write( JSON.stringify(files) );
+        response.end();
+    });
+});
 
 app.get('/directory/:dir?', function(req, res){
 
     var directory = req.param('dir');
     currentPath = path.resolve(currentPath, directory);
     console.log( currentPath );
-
+    $address.set(currentPath);
 
     $folder.open( currentPath, function(files) {
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -62,6 +90,8 @@ app.get('/list', function(request, response) {
         response.end();
     });
 });
+
+
 
 app.use(function (req, res, next) {
 
@@ -111,6 +141,6 @@ fs.readdir(p, function (err, files) {
     });
 });
 
-/*
+*/
 
 

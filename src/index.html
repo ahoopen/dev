@@ -76,22 +76,30 @@
 
     </style>
     <body>
-        <div id="video-placeholder">
-            <ol class="list" id="tweets"></ol>
+        <div id="address"></div>
+        <div id="video-placeholder" class="pt-perspective">
+            <div class="pt-page"><ol class="list" id="tweets"></ol></div>
+            <div class="pt-page"><ol class="list" id="tweets2">sdasddasasdasdasd</ol></div>
         </div>
         
         <script type="text/javascript">
         var tweet_list = $("#tweets");
+        var tweet_list2 = $("#tweets2");
          
         function load_tweets() {
             $.getJSON("http://127.0.0.1:8888/list", function(files) {
-            	directoryView(files);
+            	directoryView(files, tweet_list);
             });
         }
 
         function getDirectortyList(dir) {
+            //$('#tweets2').addClass('pt-page-flipOutRight');
+            //$('#tweets').addClass('pt-page-current pt-page-flipInLeft pt-page-delay500');  
+            PageTransitions.nextPage(34);
+
              $.getJSON("http://127.0.0.1:8888/directory/" + dir, function(files) {
-                directoryView(files);
+                getBreadCrumbs();
+                directoryView(files, tweet_list2);
              });
         }
 
@@ -105,19 +113,37 @@
                 $(videoNode).click(function () {
                     screenfull.toggle(this);
                 }); 
-   
-               //screenfull.request(videoNode);
              });            
         }
 
-        function directoryView(files) {
+        function getBreadCrumbs() {
+            $.getJSON("http://127.0.0.1:8888/path/", function(breadcrumbs) {
+                $('#address').empty();
+                $.each(breadcrumbs, function(breadcrumb) {
+                    $('#address').append("<li data-path='" + breadcrumbs[breadcrumb].path + "'>" + breadcrumbs[breadcrumb].name + "</li>");
+                });
+
+         
+                $('#address').find('li').each( function(index, element) {
+                    $(element).click( function() {
+                        var path = $(this).attr('data-path');
+                         $.post("http://127.0.0.1:8888/goto/", { path: path} ,function(files) {
+                            directoryView( JSON.parse(files) );
+                            getBreadCrumbs();
+                         });
+                    });
+                });
+            });           
+        }
+
+        function directoryView(files, page) {
             tweet_list.empty();
-  
+
             $.each(files, function(file) {
                 if( files[file].isDir ) {
-                     $("<li class='dir '>").html( files[file].name).prependTo(tweet_list);
+                     $("<li class='dir '>").html( files[file].name).prependTo(page);
                 } else {
-                    $("<li class='file item'>").html( files[file].name).prependTo(tweet_list);
+                    $("<li class='file item'>").html( files[file].name).prependTo(page);
                 }
                
             });
@@ -136,10 +162,14 @@
                 $(element).click( function() {
                     getFile( $(this).text() );
                 });
-            });               
+            });
+                        
         }
 
+        getBreadCrumbs();
         load_tweets();
         </script>
+                <script type="text/javascript" src="modernizr.custom.js"></script>
+        <script type="text/javascript" src="pagetransitions.js"></script>
     </body>
 </html>
