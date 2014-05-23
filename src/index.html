@@ -1,14 +1,145 @@
+<!DOCTYPE html>
 <html>
-    <title>Welcome</title>
+    <head>
+        <title>Media center</title>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="screenfull.min.js"></script>
+        <link type="text/css" rel="StyleSheet"  href="style.css"></link>
+    </head>
+    <style type="text/css">
+
+    .dir {
+        font-weight: bold;
+        color: #FF5C4A;
+    }
+
+    #video-placeholder:-webkit-full-screen
+    {
+        float: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0 none;
+        background-color: #f00;
+    } 
+    #video-placeholder:-moz-full-screen
+    {
+        float: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0 none;
+    }
+    #video-placeholder:-ms-full-screen
+    {
+        float: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0 none;
+    }
+    #video-placeholder:-o-full-screen
+    {
+        float: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0 none;
+    }
+    #video-placeholder:full-screen
+    {
+        float: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0 none;
+    } 
+    video {
+      width: 100%    !important;
+      height: auto   !important;
+    }
+
+    body {
+        background-color: #424242;
+        color: #FFFFEA;
+        font-family: 'Bariol';
+        font-size: 36px;
+    }
+    .selected {
+        color: #FF5C4A;
+    }
+
+    </style>
     <body>
+        <div id="video-placeholder">
+            <ol class="list" id="tweets"></ol>
+        </div>
+        
+        <script type="text/javascript">
+        var tweet_list = $("#tweets");
+         
+        function load_tweets() {
+            $.getJSON("http://127.0.0.1:8888/list", function(files) {
+            	directoryView(files);
+            });
+        }
 
-        <ul id="foldertree"></ul>
+        function getDirectortyList(dir) {
+             $.getJSON("http://127.0.0.1:8888/directory/" + dir, function(files) {
+                directoryView(files);
+             });
+        }
 
-        <video controls>
-            <source src="movie.mp4" type="video/mp4"/>
+        function getFile(filename) {
+             $.getJSON("http://127.0.0.1:8888/file/" + filename, function(file) {
+               $('#video-placeholder').html('<video controls ></video>');
 
-            <!-- fallback -->
-            Your browser does not support the <code>video</code> element.
-        </video>
+               var videoNode = document.querySelector('video');
+               videoNode.src = file.path;
+
+                $(videoNode).click(function () {
+                    screenfull.toggle(this);
+                }); 
+   
+               //screenfull.request(videoNode);
+             });            
+        }
+
+        function directoryView(files) {
+            tweet_list.empty();
+  
+            $.each(files, function(file) {
+                if( files[file].isDir ) {
+                     $("<li class='dir '>").html( files[file].name).prependTo(tweet_list);
+                } else {
+                    $("<li class='file item'>").html( files[file].name).prependTo(tweet_list);
+                }
+               
+            });
+
+            $('.dir').each( function(index, element) {
+                $(element).click( function() {
+                    getDirectortyList( $(this).text() );
+                });
+            });
+
+            getFileView();            
+        }
+         
+        function getFileView() {
+            $('.file').each( function(index, element) {
+                $(element).click( function() {
+                    getFile( $(this).text() );
+                });
+            });               
+        }
+
+        load_tweets();
+        </script>
     </body>
 </html>

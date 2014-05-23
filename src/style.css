@@ -1,0 +1,13 @@
+    @font-face {
+      font-family: 'Bariol';
+      src: url('Bariol_Regular.otf'); /* IE9 Compat Modes */
+    }
+
+    .list {
+    	margin-left: 60px;
+    }
+
+    .list .item {
+    	padding: 5px;
+    	font-size: 40px;
+    }

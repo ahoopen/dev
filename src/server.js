@@ -5,112 +5,112 @@ var fs = require('fs'),
 
     var $ = require('jquery');
 
-var indexPage, movie_webm, movie_mp4, movie_ogg;
+    var file = require('./file');
+    var folder = require('./folder');
+
+var express = require('express');
+var app = express();
+
+var $folder = new folder.folder();
+var $file = new file.file();
+
+var currentPath = __dirname + "/files/";
+
+app.get('/directory/:dir?', function(req, res){
+
+    var directory = req.param('dir');
+    currentPath = path.resolve(currentPath, directory);
+    console.log( currentPath );
 
 
-var fs = require('fs');
-fs.readdir(__dirname + '/files', function (err, files) { // '/' denotes the root folder
-  if (err) throw err;
-
-   files.forEach( function (file) {
-     fs.lstat('/'+file, function(err, stats) {
-       if (!err && stats.isDirectory()) { //conditing for identifying folders
-         $('ul#foldertree').append('<li class="folder">'+file+'</li>');
-       }
-       else{
-        $('ul#foldertree').append('<li class="file">'+file+'</li>');
-      }
-     });
-   });
-
-});
-
-
-// load the video files and the index html page
-fs.readFile(path.resolve(__dirname,"movie.webm"), function (err, data) {
-    if (err) {
-        throw err;
-    }
-    movie_webm = data;
-});
-fs.readFile(path.resolve(__dirname,"test.mp4"), function (err, data) {
-    if (err) {
-        throw err;
-    }
-    movie_mp4 = data;
-});
-fs.readFile(path.resolve(__dirname,"movie.ogg"), function (err, data) {
-    if (err) {
-        throw err;
-    }
-    movie_ogg = data;
-});
-
-fs.readFile(path.resolve(__dirname,"index.html"), function (err, data) {
-    if (err) {
-        throw err;
-    }
-    indexPage = data;    
-});
-
-// create http server
-http.createServer(function (req, res) {
-    
-    var reqResource = url.parse(req.url).pathname;
-    console.log(reqResource);
-    //console.log("Resource: " + reqResource);
-
-    if(reqResource == "/"){
-    
-        //console.log(req.headers)
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write(indexPage);
+    $folder.open( currentPath, function(files) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.writeHead(200);
+        res.write( JSON.stringify(files) );
         res.end();
+    });
+});
 
-    } else if (reqResource == "/favicon.ico"){
-    
-        res.writeHead(404);
-        res.end();
-    
-    } else {
+app.get('/file/:filename?', function(request, response) {
+    var filename = request.param('filename');
 
-            var total;
-            if(reqResource == "/movie.mp4"){
-                total = movie_mp4.length;
-            } else if(reqResource == "/movie.ogg"){
-                total = movie_ogg.length;
-            } else if(reqResource == "/movie.webm"){
-                total = movie_webm.length;
-            } 
-                
-            var range = req.headers.range;
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.writeHead(200);
+        response.write( JSON.stringify( { path : currentPath + "/" + filename } ) );
+        response.end();    
+});
 
-            var positions = range.replace(/bytes=/, "").split("-");
-            var start = parseInt(positions[0], 10);
-            // if last byte position is not present then it is the last byte of the video file.
-            var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
-            var chunksize = (end-start)+1;
+app.get('/', function(request, response) {
+    fs.readFile(path.resolve(__dirname,"index.html"), function (err, data) {
+        if (err) {
+            throw err;
+        }
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.writeHead(200);
+        response.write( data );
+        response.end();
+    });   
+});
 
-            if(reqResource == "/movie.mp4"){
-                res.writeHead(206, { "Content-Range": "bytes " + start + "-" + end + "/" + total, 
-                                     "Accept-Ranges": "bytes",
-                                     "Content-Length": chunksize,
-                                     "Content-Type":"video/mp4"});
-                res.end(movie_mp4.slice(start, end+1), "binary");
+app.get('/list', function(request, response) {
+    currentPath = __dirname + "/files/";
 
-            } else if(reqResource == "/movie.ogg"){
-                res.writeHead(206, { "Content-Range": "bytes " + start + "-" + end + "/" + total, 
-                                     "Accept-Ranges": "bytes",
-                                     "Content-Length": chunksize,
-                                     "Content-Type":"video/ogg"});
-                res.end(movie_ogg.slice(start, end+1), "binary");
+    $folder.open( __dirname + "/files", function(files) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.writeHead(200);
+        response.write( JSON.stringify(files) );
+        response.end();
+    });
+});
 
-            } else if(reqResource == "/movie.webm"){
-                res.writeHead(206, { "Content-Range": "bytes " + start + "-" + end + "/" + total, 
-                                     "Accept-Ranges": "bytes",
-                                     "Content-Length": chunksize,
-                                     "Content-Type":"video/webm"});
-                res.end(movie_webm.slice(start, end+1), "binary");
-            }
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+app.listen(8888);
+
+
+/*
+dir.open( __dirname + "/files", function(files) {
+    files.forEach( function(file) {
+        //console.log( $file.isDirectory(file.path) );
+        console.log( file.extensie );
+    });
+});
+
+//console.log( $file.isDirectory(__dirname + "/files") );
+
+/*
+var p = __dirname + "/files";
+fs.readdir(p, function (err, files) {
+    if (err) {
+        throw err;
     }
-}).listen(8888); 
+
+    files.map(function (file) {
+        return path.join(p, file);
+    }).filter(function (file) {
+        return fs.statSync(file).isFile();
+    }).forEach(function (file) {
+        console.log("%s (%s)", file, path.extname(file));
+    });
+});
+
+/*
+
+
