@@ -3,26 +3,36 @@ var fs = require('fs'),
     url = require('url'),
     path = require('path');
 
-    var $ = require('jquery');
 
     var file = require('./file');
     var folder = require('./folder');
     var address = require('./address');
 
 var express = require('express');
-var app = express();
+    app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server);
 
 var $folder = new folder.folder();
 var $file = new file.file();
 var $address = new address.address();
 
-var currentPath = __dirname + "/files";
-var defaultPath = __dirname + "/files/";
+//var currentPath = __dirname + "/files";
+
+var currentPath = "/Volumes/Seagate Backup Plus Drive/Series/";
+//var defaultPath = __dirname + "/files/";
 // zet het begin pad
 $address.set(currentPath);
 
-app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
+/**
+* Environment variablen
+**/
+app.set('port', process.env.TEST_PORT || 8888);
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.json());       // to support JSON-encoded bodies
+//app.use(express.urlencoded()); // to support URL-encoded bodies
 
 app.get('/path', function(request, response) {
     response.setHeader("Access-Control-Allow-Origin", "*");
@@ -68,22 +78,13 @@ app.get('/file/:filename?', function(request, response) {
         response.end();    
 });
 
-app.get('/', function(request, response) {
-    fs.readFile(path.resolve(__dirname,"index.html"), function (err, data) {
-        if (err) {
-            throw err;
-        }
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.writeHead(200);
-        response.write( data );
-        response.end();
-    });   
-});
 
 app.get('/list', function(request, response) {
-    currentPath = __dirname + "/files/";
+    //currentPath = __dirname + "/files/";
+    currentPath = "/Volumes/Seagate Backup Plus Drive/Series";
 
-    $folder.open( __dirname + "/files", function(files) {
+    // __dirname + "/files"
+    $folder.open( currentPath, function(files) {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.writeHead(200);
         response.write( JSON.stringify(files) );
@@ -91,10 +92,70 @@ app.get('/list', function(request, response) {
     });
 });
 
+/**
+* Geeft de HTML van de afstand bediening terug.
+**/
+app.get('/remote', function( request, response ) {
+    response.sendfile( __dirname + '/public/remote.html', {}, function(err) {
+        if(err) throw err;
+    });
+});
 
+app.get('/', function( request, response ) {
+    response.sendfile( __dirname + '/public/index.html');
+});
+
+app.get('/grid', function( request, response ) {
+  response.sendfile( __dirname + '/public/list.html');
+});
+
+//Socket.io Config
+io.set('log level', 1);
+
+server.listen(app.get('port'), function(){
+  console.log('Npire is running on port ' + app.get('port'));
+});
+
+var ss;
+
+//Socket.io Server
+io.sockets.on('connection', function (socket) {
+
+ socket.on("screen", function(data){
+   socket.type = "screen";
+   ss = socket;
+   console.log("Screen ready...");
+ });
+ socket.on("remote", function(data){
+   socket.type = "remote";
+   console.log("Remote ready...");
+ });
+
+ socket.on("controll", function(data){
+    console.log(data);
+   if(socket.type === "remote"){
+
+     if(data.action === "tap"){
+         if(ss != undefined){
+            ss.emit("controlling", {action:"enter"});
+            }
+     }
+     else if(data.action === "swipeLeft"){
+      if(ss != undefined){
+          ss.emit("controlling", {action:"goLeft"});
+          }
+     }
+     else if(data.action === "swipeRight"){
+       if(ss != undefined){
+           ss.emit("controlling", {action:"goRight"});
+           }
+     }
+   }
+ });
+});
 
 app.use(function (req, res, next) {
-
+    /*
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -110,37 +171,10 @@ app.use(function (req, res, next) {
 
     // Pass to next layer of middleware
     next();
+    */
 });
 
-app.listen(8888);
+//app.listen(8888);
 
-
-/*
-dir.open( __dirname + "/files", function(files) {
-    files.forEach( function(file) {
-        //console.log( $file.isDirectory(file.path) );
-        console.log( file.extensie );
-    });
-});
-
-//console.log( $file.isDirectory(__dirname + "/files") );
-
-/*
-var p = __dirname + "/files";
-fs.readdir(p, function (err, files) {
-    if (err) {
-        throw err;
-    }
-
-    files.map(function (file) {
-        return path.join(p, file);
-    }).filter(function (file) {
-        return fs.statSync(file).isFile();
-    }).forEach(function (file) {
-        console.log("%s (%s)", file, path.extname(file));
-    });
-});
-
-*/
 
 
