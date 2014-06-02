@@ -1,3 +1,4 @@
+/**
 define(['car', 'jquery'], function(Auto, $) {
 
     describe('Auto', function() {
@@ -31,3 +32,4 @@ define(['car', 'jquery'], function(Auto, $) {
     });
 
 });
+**/

@@ -160,8 +160,8 @@ module.exports = function(grunt) {
 	
   grunt.registerTask('dev', [ 
     'karma:unit:start',
-    'watch',
-    'notify:dev'
+    'watch'
+    /*'notify:dev' */
   ]);
   
   /**

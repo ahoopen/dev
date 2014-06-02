@@ -6,7 +6,6 @@ var fs = require('fs'),
 
     var file = require('./file');
     var folder = require('./folder');
-    var address = require('./address');
 
 var express = require('express');
     app = express(),
@@ -15,14 +14,12 @@ var express = require('express');
 
 var $folder = new folder.folder();
 var $file = new file.file();
-var $address = new address.address();
 
 //var currentPath = __dirname + "/files";
 
 var currentPath = "/Volumes/Seagate Backup Plus Drive/Series/";
 //var defaultPath = __dirname + "/files/";
 // zet het begin pad
-$address.set(currentPath);
 
 /**
 * Environment variablen
