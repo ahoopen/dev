@@ -1,0 +1,43 @@
+<head>
+    <meta charset="utf-8">
+    <title>Mediaplayer</title>
+    
+    <link href="css/grid.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <script src="js/modernizr.custom.js"></script>
+</head>
+<section class="grid3d vertical" id="grid3d">
+    <div class="grid-wrap">
+        <div class="grid">
+            <figure><img src="img/1.jpg" alt="img01"/></figure>
+            <figure><img src="img/5.jpg" alt="img05"/></figure>
+            <figure><img src="img/8.jpg" alt="img08"/></figure>
+            <figure><img src="img/2.jpg" alt="img02"/></figure>
+            <figure><img src="img/4.jpg" alt="img04"/></figure>
+            <figure><img src="img/3.jpg" alt="img03"/></figure>
+            <figure><img src="img/9.jpg" alt="img09"/></figure>
+            <figure><img src="img/6.jpg" alt="img06"/></figure>
+            <figure><img src="img/7.jpg" alt="img07"/></figure>
+            <!-- ... -->
+        </div>
+    </div><!-- /grid-wrap -->
+    <div class="content">
+        <div>
+            <div class="dummy-img"></div>
+            <p class="dummy-text">Some text</p>
+            <p class="dummy-text">Some more text</p>
+        </div>
+        <div>
+            <!-- ... -->
+        </div>
+        <!-- ... -->
+        <span class="loading"></span>
+        <span class="icon close-content"></span>
+    </div>
+            <script src="js/classie.js"></script>
+        <script src="js/helper.js"></script>
+        <script src="js/grid3d.js"></script>
+        <script>
+            new grid3D( document.getElementById( 'grid3d' ) );
+        </script>
+</section>

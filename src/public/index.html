@@ -1,0 +1,47 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mediaplayer</title>
+	
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+</head>
+<body>
+	<div class="logo"></div>
+	<div class="logo-txt">
+		<h2>Mediaplayer</h2>
+	</div>
+	<div class="time-block">
+		<div id="time" >18 : 12 : 00</div>
+		<p id="date" class="title">Maandag 26 mei</p>
+	</div>
+	
+	<div class="app-block">
+		<div id="start-block"></div>
+		<div class="a-block selected">
+			<span class="ico">:</span>
+			<p>Watch</p>
+		</div>
+		<div class="a-block">
+			<span class="ico">;</span>
+			<p>Listen</p>
+		</div>
+		<div class="a-block">
+			<span class="ico">></span>
+			<p>Play</p>
+		</div>
+		<div id="end-block"></div>
+	</div>
+	<div class="weather-block">
+		<ul class="weather"></ul>
+	</div>
+	<div class="footer">
+		<div class="lamba"><img src="images/ll_logo.png"/></div>
+	</div>
+	<!-- Javascripts -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="js/display.js"></script>
+	<script src="js/jquery.js"></script>
+	</script>
+</body>
+</html>
