@@ -14,7 +14,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     
     jshint: {
-      src: ['src/**/*.js'],
+      src: [
+        'src/**/*.js', 
+        '!src/public/vendor/**/*.js'
+      ],
       options: {
         curly: true,
         eqeqeq: true,
@@ -43,7 +46,9 @@ module.exports = function(grunt) {
           console: true,
           it: true,
           $: true,
-          moment : true
+          moment : true,
+          app : true,
+          __dirname : true
         }
       }
     },
