@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 
-var path = require('path')
-var rootPath = path.resolve(__dirname + '../..')
+var path = require('path'),
+ 	rootPath = path.resolve(__dirname + '../..');
 
 /**
  * Expose config

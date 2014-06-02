@@ -33,9 +33,10 @@ module.exports = function(grunt) {
         undef: true,
         boss: true,
         eqnull: true,
+        node : true,
         browser: true,
         globals: {
-		  exports: true,
+		      exports: true,
           require: true,
           define: true,
           requirejs: true,
@@ -44,8 +45,11 @@ module.exports = function(grunt) {
           module: true,
           jQuery: true,
           console: true,
+          process: true,
           it: true,
           $: true,
+          /* gesture lib voor javascript */
+          $$: true,
           moment : true,
           app : true,
           __dirname : true

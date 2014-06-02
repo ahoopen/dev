@@ -23,7 +23,9 @@ MediaSchema.pre('save', function(next) {
 	var self = this;
 
 	MediaSchema.findOne( { location : this.location }, function(err, result) {
-		if( err ) throw err;
+		if( err ) {
+			throw err;
+		}
 
 		if( !result ) {
 			next();
@@ -42,17 +44,23 @@ var vid1 = new Media( { name : 'dexter s01e01', location: 'series/dexter'} );
 var vid2 = new Media( { name : 'dexter s01e01', location: 'series/dexter'} );
 
 vid1.save(function (err, video) {
-  if (err) return console.error(err);
+  if (err) {
+  	return console.error(err);
+  }
 });
 
 vid2.save(function (err, video) {
-  if (err) return console.error(err);
+  if (err) {
+  	return console.error(err);
+  }
 });
 
 
 Media.find({ 'name' : 'dexter s01e01'}, function(err, result) {
-	if(err) throw err;
-
+	if(err) {
+		throw err;
+	}
+	
 	result.forEach(function(media) {
     	console.log(media.name, media.location);
     });

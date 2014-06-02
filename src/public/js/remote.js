@@ -1,3 +1,4 @@
+/**
 var host = document.location.host;
 var socket = io.connect(host);
 
@@ -9,9 +10,8 @@ socket.on('connect', function(data) {
 	onGesture();
 });
 
-/**
-* Installeer de remote gestures
-*/
+
+// Installeer de remote gestures
 function onGesture() {
 	var gestures = ['swipeLeft', 'swipeRight', 'swipeUp', 
 					'swipeDown', 'tap'];
@@ -60,3 +60,4 @@ function onSwipeDown() {
 function onTap() {
 	socket.emit('controll',{ action:"tap"}); 
 }
+*/

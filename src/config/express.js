@@ -10,4 +10,4 @@ module.exports = function(app) {
 
 	// router
 	app.use(app.router);
-}
+};

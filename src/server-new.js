@@ -2,7 +2,7 @@ var express = require('express'),
 	fs  = require('fs');
 
 // laad configuraties
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'development',
 	config = require('./config/config')[env],
 	mongoose = require('mongoose');
 
@@ -24,7 +24,9 @@ mongoose.connection.on('disconnected', function() {
 // bootstrap de modellen
 var models_path = __dirname + '/app/models';
 fs.readdirSync(models_path).forEach( function(file) {
-	if (~file.indexOf('.js')) require(models_path + '/' + file);
+	if (~file.indexOf('.js')) {
+		require(models_path + '/' + file);
+	}
 });
 
 var app = express();
