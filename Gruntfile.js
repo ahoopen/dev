@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-plato');
@@ -93,14 +94,20 @@ module.exports = function(grunt) {
       }
     },
 
-    cssmin : {
-      build : {
-        files : {
-          'dist/application.css' : ['assets/**/*.css']
+    less: {
+      development: {
+        options: {
+          compress: true,
+          yuicompress: true,
+          optimization: 2
+        },
+        files: {
+          // target.css file: source.less file
+          "src/public/css/stylesheet.css":"src/public/css/stylesheet.less"
         }
       }
-    },
-
+    },    
+    	
     requirejs : {
       options : {
         baseUrl: "./"
