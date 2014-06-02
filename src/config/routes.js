@@ -14,8 +14,7 @@ module.exports = function(app) {
 	});
 
 	// aanmaken van een account
-	//app.get('/signup', user.signup);
-	app.get('/signup', function(request, response) {
-		//response.sendfile( app.get('rootPath') + '/public/index.html');
+	app.get('/register', function(request, response) {
+		response.sendfile( app.get('rootPath') + '/public/register.html');
 	});
 };
