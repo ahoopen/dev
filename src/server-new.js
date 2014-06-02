@@ -6,7 +6,6 @@ var env = process.env.NODE_ENV || 'development';
 	config = require('./config/config')[env],
 	mongoose = require('mongoose');
 
-
 var connect = function() {
 	var options = { server : { socketOptions: { keepAlive : 1 } } };
 	mongoose.connect( config.db, options );
@@ -36,10 +35,10 @@ require('./config/express')(app);
 // boorstrap routes
 require('./config/routes')(app);
 
-var port = process.env.PORT || 8888;
+var port = process.env.PORT || 80;
 app.listen(port);
 
-console.log('Server draait');
+console.log('Server draait op poort ' + port);
 app.set('rootPath', __dirname);
 
 exports = module.exports = app;
