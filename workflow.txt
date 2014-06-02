@@ -1,7 +1,0 @@
-- Unit test draaien (mocha)
-- Cover test draaien (blanket)
-
-
-
-http://www.growlforwindows.com/gfw/default.aspx
-Translucent Dark v1.8
