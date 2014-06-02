@@ -5,7 +5,7 @@ var async = require('async');
 *
 *
 **/
-var scan = function(dir, extensions, callback) {
+var getFiles = function(dir, extensions, callback) {
   
   fs.readdir(dir, function(err, files) {
     var returnFiles = [];
@@ -22,7 +22,7 @@ var scan = function(dir, extensions, callback) {
         // is het een directory?
         if ( stat.isDirectory() ) {
           // scan deze directory ook
-          scan(filePath, extensions, function(err, results) {
+          getFiles(filePath, extensions, function(err, results) {
             if (err) {
               return next(err);
             }
@@ -51,7 +51,7 @@ var scan = function(dir, extensions, callback) {
 };
 
 
-scan(__dirname + '/files', ['.txt', '.mp4'], function(err, files) {
-  // Do something with files that ends in '.ext'.
+getFiles(__dirname + '/files', ['.txt', '.mp4'], function(err, files) {
+  // doe iets met bestanden die de extensie, .txt en .mp4 hebben
   console.log(files);
 });
