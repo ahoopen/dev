@@ -50,8 +50,10 @@ var getFiles = function(dir, extensions, callback) {
   });
 };
 
+var test = {};
 
-getFiles(__dirname + '/files', ['.txt', '.mp4'], function(err, files) {
+
+getFiles('/files', ['.mkv', '.mp4', '.avi'], function(err, files) {
   // doe iets met bestanden die de extensie, .txt en .mp4 hebben
   console.log(files);
 });
