@@ -14,7 +14,7 @@ connect();
 
 // error handling
 mongoose.connection.on('error', function(err) {
-	console.log(err);
+	console.log("error mongoose : ", err);
 });
 
 mongoose.connection.on('disconnected', function() {
@@ -34,10 +34,12 @@ var app = express();
 // applicatie settings
 require('./config/express')(app);
 
+app.use(express.static(__dirname + '/public') ); 
+
 // boorstrap routes
 require('./config/routes')(app);
 
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 app.listen(port);
 
 console.log('Server draait op poort ' + port);

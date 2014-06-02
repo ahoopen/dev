@@ -53,6 +53,7 @@ module.exports = function(grunt) {
           $$: true,
           moment : true,
           app : true,
+          angular : true,
           __dirname : true
         }
       }
@@ -152,7 +153,10 @@ module.exports = function(grunt) {
     plato : {
       test : {
         files : {
-          'reports' : ['src/**/*.js']
+          'reports' : [
+            'src/**/*.js',
+            '!src/public/vendor/**/*.js'
+          ]
         }
       }
     },
