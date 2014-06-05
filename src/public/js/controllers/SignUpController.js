@@ -10,6 +10,12 @@ var app = angular.module('signupApp', ['userService'])
 		$scope.createUser = function() {
 			$scope.submitted = false;
 
+			if ($('#SignUpFormWrapper').hasClass('flipped')) {
+				 $('#SignUpFormWrapper').removeClass('flipped');
+			} else {
+				 $('#SignUpFormWrapper').addClass('flipped');
+			}
+		
 			if ( $scope.signupForm.$valid ) {
 				$scope.submitted = true;
 
@@ -22,7 +28,7 @@ var app = angular.module('signupApp', ['userService'])
 				// maak een gebruiker aan
 				User.create(formData)
 					.succes(function(data) {
-						$scope.formData = {};
+						//$scope.formData = {};
 						console.log('succes!', data);
 					})
 					.error(function(err) {
@@ -32,9 +38,6 @@ var app = angular.module('signupApp', ['userService'])
 		};
 
 		$scope.dirtyAndInvalid = function(field) {
-			if(field.$pristine) {
-				return true;
-			}
 			return field.$dirty && field.$invalid;
 		};
 

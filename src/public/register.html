@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 	<title>Mediaplayer</title>
 	
-	<link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <style type="text/css">
         input.ng-invalid {
@@ -12,6 +12,62 @@
         input.ng-valid {
           border: 1px solid green;
         }
+
+        .SignUpContainer {
+
+           position: relative;
+          -webkit-perspective: 800px;
+             -moz-perspective: 800px;
+               -o-perspective: 800px;
+                  perspective: 800px;         
+        }
+
+        #SignUpFormWrapper {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          -webkit-transition: -webkit-transform 1s;
+             -moz-transition: -moz-transform 1s;
+               -o-transition: -o-transform 1s;
+                  transition: transform 1s;
+          -webkit-transform-style: preserve-3d;
+             -moz-transform-style: preserve-3d;
+               -o-transform-style: preserve-3d;
+                  transform-style: preserve-3d;
+          -webkit-transform-origin: right center;
+             -moz-transform-origin: right center;
+               -o-transform-origin: right center;
+                  transform-origin: right center;
+        }
+
+        #SignUpFormWrapper .view {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+              -moz-backface-visibility: hidden;
+                -o-backface-visibility: hidden;
+                   backface-visibility: hidden;
+        }
+
+        #SignUpFormWrapper .back {
+          -webkit-transform: rotateY( 180deg );
+             -moz-transform: rotateY( 180deg );
+               -o-transform: rotateY( 180deg );
+                  transform: rotateY( 180deg );
+        }
+
+        #SignUpFormWrapper.flipped {
+          -webkit-transform: translateX( -100% ) rotateY( -180deg );
+             -moz-transform: translateX( -100% ) rotateY( -180deg );
+               -o-transform: translateX( -100% ) rotateY( -180deg );
+                  transform: translateX( -100% ) rotateY( -180deg );
+        }
+
+
+
+
     </style>
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/angular/angular.min.js"></script>
@@ -19,77 +75,104 @@
 </head>
 <body ng-app="signupApp">
 <br />
+<br />
+
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Registreren</h3>
-                </div>
-                <div class="panel-body">
-                    <form name="signupForm" accept-charset="UTF-8"  novalidate ng-controller="signupValidation" ng-submit="createUser()">
-                    <fieldset>
-                        <div class="form-group">
-                            <input class="form-control" 
-                                placeholder="Gebruikersnaam" 
-                                ng-model="user.name" 
-                                name="username" 
-                                type="text"
-                                ng-class="{error: dirtyAndInvalid(signupForm.username)}"
-                                ng-minLength=3
-                                ng-maxlength=20 
-                                ng-focus
-                                check-Field="username"
-                                required>
+            <div class="SignUpContainer">
+              <div id="SignUpFormWrapper">
+                <div class="view front">
 
-                            <div class="error-container" ng-show="signupForm.username.$dirty && signupForm.username.$invalid && !signupForm.username.$focused">
-                                <small class="error" ng-show="signupForm.username.$error.required">Gebruikersnaam is verplicht</small>
-                                <small class="error" ng-show="signupForm.username.$error.minlength">Gebruikersnaam moet minimaal 3 karakters lang zijn.</small>
-                                <small class="error" ng-show="signupForm.username.$error.maxlength">Gebruikersnaam mag niet groter dan 20 karakters zijn.</small>
-                                <small class="error" ng-show="signupForm.username.$error.unique">Gebruikersnaam is al in gebruik, probeer een ander.</small>
-                            </div>
-                        </div>                        
-                        <div class="form-group">
-                            <input class="form-control" 
-                                placeholder="E-mail"
-                                ng-model="user.email"
-                                ng-class="{error: dirtyAndInvalid(signupForm.email)}"
-                                name="email"
-                                ng-focus 
-                                type="email">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Registreren</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form name="signupForm" accept-charset="UTF-8"  novalidate ng-controller="signupValidation" ng-submit="createUser()">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" 
+                                        placeholder="Gebruikersnaam" 
+                                        ng-model="user.name" 
+                                        name="username" 
+                                        type="text"
+                                        ng-class="{error: dirtyAndInvalid(signupForm.username)}"
+                                        ng-minLength=3
+                                        ng-maxlength=20 
+                                        ng-focus
+                                        check-Field="username"
+                                        required>
 
-                            <div class="error-container" ng-show="signupForm.email.$dirty && signupForm.email.$invalid && !signupForm.email.$focused">
-                                <small class="error" ng-show="signupForm.email.$error.email">Vul een geldig email adres in</small>
-                            </div>
+                                    <div class="error-container" ng-show="signupForm.username.$dirty && signupForm.username.$invalid && !signupForm.username.$focused">
+                                        <small class="error" ng-show="signupForm.username.$error.required">Gebruikersnaam is verplicht</small>
+                                        <small class="error" ng-show="signupForm.username.$error.minlength">Gebruikersnaam moet minimaal 3 karakters lang zijn.</small>
+                                        <small class="error" ng-show="signupForm.username.$error.maxlength">Gebruikersnaam mag niet groter dan 20 karakters zijn.</small>
+                                        <small class="error" ng-show="signupForm.username.$error.unique">Gebruikersnaam is al in gebruik, probeer een ander.</small>
+                                    </div>
+                                </div>                        
+                                <div class="form-group">
+                                    <input class="form-control" 
+                                        placeholder="E-mail"
+                                        ng-model="user.email"
+                                        ng-class="{error: dirtyAndInvalid(signupForm.email)}"
+                                        name="email"
+                                        ng-focus 
+                                        type="email">
+
+                                    <div class="error-container" ng-show="signupForm.email.$dirty && signupForm.email.$invalid && !signupForm.email.$focused">
+                                        <small class="error" ng-show="signupForm.email.$error.email">Vul een geldig email adres in</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" 
+                                        placeholder="Wachtwoord"  
+                                        name="password" 
+                                        type="password"
+                                        ng-model="user.password" 
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" 
+                                        placeholder="Bevestig wachtwoord"  
+                                        name="password2" 
+                                        ng-model="user.password2"
+                                        type="password"
+                                        password-match="user.password"
+                                        required>
+                                    <div class="error-container" ng-show="signupForm.password2.$dirty && signupForm.password2.$invalid && !signupForm.password2.$focused">
+                                        <small class="error" ng-show="signupForm.password2.$error.unique">Wachtwoord komt niet overeen.</small>
+                                    </div>
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" ng-disabled="signupForm.$invalid" type="submit" value="Aanmelden">
+                            </fieldset>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control" 
-                                placeholder="Wachtwoord"  
-                                name="password" 
-                                type="password"
-                                ng-model="user.password" 
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" 
-                                placeholder="Bevestig wachtwoord"  
-                                name="password2" 
-                                ng-model="user.password2"
-                                type="password"
-                                password-match="user.password"
-                                required>
-                            <div class="error-container" ng-show="signupForm.password2.$dirty && signupForm.password2.$invalid && !signupForm.password2.$focused">
-                                <small class="error" ng-show="signupForm.password2.$error.unique">Wachtwoord komt niet overeen.</small>
-                            </div>
-                        </div>
-                        <input class="btn btn-lg btn-success btn-block" ng-disabled="signupForm.$invalid" type="submit" value="Aanmelden">
-                    </fieldset>
-                    </form>
+                    </div>
                 </div>
+    <div class="view back">
+
+  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Registratie is succesvol!</h3>
+            </div>
+            <div class="panel-body">
+                   <p>
+                    De registratie is succesvol verlopen. Ga nu verder met het aanmaken van je media profiel.
+                    Zodat je zo snel mogelijk kan beginnen met kijken. Alvast veel kijk plezier! :)
+                   </p>
+                   <input class="btn btn-lg btn-success btn-block" type="submit" value="Profiel instellen">
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+</div>
             </div>
         </div>
     </div>
-</div>
 <script src="/js/services/userService.js"></script>
 <script src="/js/controllers/SignUpController.js" ></script>
 </body>

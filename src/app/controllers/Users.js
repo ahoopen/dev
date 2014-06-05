@@ -15,8 +15,6 @@ exports.create = function(data, callback) {
 		password : data.password 
 	} );
 
-	console.log("voor het opslaan van de gebruiker");
-
 	user.save( function(err) {
 		if(err) {
 			throw err;
@@ -40,8 +38,4 @@ function hasValidationErrors(err) {
 
 exports.hasUniqueUsername = function(value, cb) {
 	User.hasUniqueUsername(value, cb);
-};
-
-exports.findAll = function() {
-	return User.findAll();
 };
