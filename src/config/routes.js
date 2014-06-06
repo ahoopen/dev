@@ -11,7 +11,20 @@ module.exports = function(app) {
 	});
 
 	app.get('/api/users', function(request, response) {
-		response.send([ { text : 'user 1' }, { text : 'user 2' } , { text : 'user 3' } ]);
+		user.getAll(request.body, function(result){
+			var json = new API.JSONResponse();
+				
+			if(result){
+				response.send( result);
+			} else {
+				json.setStatus('failed');
+				json.setPayload( {
+					message : "Er konden geen gebruikers gevonden worden."
+				} );
+				
+				response.send( json.getResponse() );
+			}
+		});	
 	});
 
 	/**

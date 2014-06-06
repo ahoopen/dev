@@ -184,6 +184,14 @@ module.exports = function(grunt) {
     'watch'
     /*'notify:dev' */
   ]);
+
+	
+  grunt.registerTask('default', [ 
+    'clean',
+    'less',
+    'plato:test', 
+    'notify:plato'
+  ]);
   
   /**
   * Genereert een code kwaliteit report 
@@ -198,7 +206,7 @@ module.exports = function(grunt) {
   **/
   grunt.registerTask('build', [
     'clean',
-    'cssmin',
+    'less',
     'requirejs:infrastructure',
     'requirejs:project',
     'notify:build'

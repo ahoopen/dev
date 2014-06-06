@@ -6,13 +6,14 @@ exports.signup = function(request, response) {
 };
 
 /**
-*
+* creates a new user.
 **/
 exports.create = function(data, callback) {
 	
 	var user = new User( { 
 		username : data.username, 
-		password : data.password 
+		password : data.password,
+		email : data.email
 	} );
 
 	user.save( function(err) {
@@ -23,6 +24,24 @@ exports.create = function(data, callback) {
 		} else {
 			console.log("gebruiker is opgeslagen!");
 			callback(true);
+		}
+	});
+};
+
+/**
+* Gets all users.
+**/
+exports.getAll = function(data, callback) {
+	
+	User.find(function (err, users) {
+		if (err) {
+			throw err;
+		} else {
+			var userDetails = users.map(function(u){
+				return {name: u.username, email: u.email};
+			});
+			
+			callback(userDetails);
 		}
 	});
 };
