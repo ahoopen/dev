@@ -27,12 +27,35 @@
 </head>
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
-	<div class="container">
 
+	<div class="container">
+		<div class="page-header">
+			<h1 id="container">MediaCenter</h1>
+		</div>
 		<!-- HEADER AND TODO COUNT -->
 		<div class="jumbotron text-center">
-			<h1>I'm a Todo-aholic <span class="label label-info">{{ todos.length }}</span></h1>
+	        <h1>Jumbotron</h1>
+	        <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+	        <p><a class="btn btn-primary btn-lg">Learn more</a></p>
 		</div>
+
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="bs-component">
+					<div class="list-group">
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 		<!-- TODO LIST -->
 		<div id="todo-list" class="row">
@@ -45,22 +68,6 @@
 					</label>
 				</div>
 
-			</div>
-		</div>
-
-		<!-- FORM TO CREATE TODOS -->
-		<div id="todo-form" class="row">
-			<div class="col-sm-8 col-sm-offset-2 text-center">
-				<form>
-					<div class="form-group">
-
-						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-						<input type="text" class="form-control input-lg text-center" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
-					</div>
-
-					<!-- createToDo() WILL CREATE NEW TODOS -->
-					<button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()">Add</button>
-				</form>
 			</div>
 		</div>
 
