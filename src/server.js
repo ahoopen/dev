@@ -31,10 +31,14 @@ fs.readdirSync(models_path).forEach( function(file) {
 
 var app = express();
 
+app.use(express.cookieParser());
+app.use(express.session({secret: '1234567890QWERTY'}));
+
 // applicatie settings
 require('./config/express')(app);
 
-app.use(express.static(__dirname + '/public') ); 
+app.use(express.static(__dirname + '/public') );
+
 
 // boorstrap routes
 require('./config/routes')(app);

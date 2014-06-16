@@ -6,12 +6,21 @@ var home = require('../app/controllers/home'),
 
 module.exports = function(app) {
 
+	function restrict(req, res, next) {
+		if (req.session.user) {
+			next();
+		} else {
+			req.session.error = 'Access denied!';
+			res.redirect('/login');
+		}
+	};	
+
 	app.get('/', function(request, response) {
 		response.sendfile( app.get('rootPath') + '/public/angular.html');
 	});
 
-	app.get('/api/users', function(request, response) {
-		user.getAll(request.body, function(result){
+	app.get('/api/user/all', function(request, response) {
+		user.getAll(function(result){
 			var json = new API.JSONResponse();
 				
 			if(result){
@@ -84,4 +93,67 @@ module.exports = function(app) {
 	app.get('/register', function(request, response) {
 		response.sendfile( app.get('rootPath') + '/public/register.html');
 	});
+
+	app.get('/restricted', restrict, function(req, res){
+		res.send('Wahoo! restricted area, click to <a href="/logout">logout</a>');
+	});
+
+	app.get('/logout', function(req, res){
+	  // destroy the user's session to log them out
+	  // will be re-created next request
+	  req.session.destroy(function(){
+		res.redirect('/');
+	  });
+	});
+
+	app.get('/login', function(request, response){
+		response.sendfile( app.get('rootPath') + '/public/login.html');
+	});
+
+	app.post('/login', function(req, res){
+	  authenticate(req.body.username, req.body.password, function(err, user){
+		var session = req.session;
+        var json = new API.JSONResponse();
+		
+		if(err || !user){
+            json.setStatus('success');
+            json.setPayload({
+                message : "Gebruiker is aangemaakt."
+            });
+		}
+		else{
+			session.regenerate(function(){
+				session.user = user;
+
+                json.setStatus('success');
+                json.setPayload( {
+                    message : "Gebruiker is aangemaakt."
+                } );
+			});
+		};
+        response.send( json.getResponse() );
+	  });
+	});
+	
+	function authenticate(name, pass, fn) {
+		
+		if (!module.parent) console.log('authenticating %s:%s', name, pass);
+		
+		user.get(name, function(result){
+			if(result){
+				var usr = result;
+				var error = null;
+				
+				if (!usr){
+					error = new Error('invalid username');
+				}
+				else if (usr.password !== pass){
+					error = new Error('invalid password');
+				};
+				
+				return fn(error, usr);
+			};
+		});	
+	};
+
 };

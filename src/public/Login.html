@@ -1,0 +1,148 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mediaplayer</title>
+	
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <style type="text/css">
+        input.ng-invalid {
+          border: 1px solid red;
+        }
+        input.ng-valid {
+          border: 1px solid green;
+        }
+
+        .SignUpContainer {
+
+           position: relative;
+          -webkit-perspective: 800px;
+             -moz-perspective: 800px;
+               -o-perspective: 800px;
+                  perspective: 800px;         
+        }
+
+        #SignUpFormWrapper {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          -webkit-transition: -webkit-transform 1s;
+             -moz-transition: -moz-transform 1s;
+               -o-transition: -o-transform 1s;
+                  transition: transform 1s;
+          -webkit-transform-style: preserve-3d;
+             -moz-transform-style: preserve-3d;
+               -o-transform-style: preserve-3d;
+                  transform-style: preserve-3d;
+          -webkit-transform-origin: right center;
+             -moz-transform-origin: right center;
+               -o-transform-origin: right center;
+                  transform-origin: right center;
+        }
+
+        #SignUpFormWrapper .view {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+              -moz-backface-visibility: hidden;
+                -o-backface-visibility: hidden;
+                   backface-visibility: hidden;
+        }
+
+        #SignUpFormWrapper .back {
+          -webkit-transform: rotateY( 180deg );
+             -moz-transform: rotateY( 180deg );
+               -o-transform: rotateY( 180deg );
+                  transform: rotateY( 180deg );
+        }
+
+        #SignUpFormWrapper.flipped {
+          -webkit-transform: translateX( -100% ) rotateY( -180deg );
+             -moz-transform: translateX( -100% ) rotateY( -180deg );
+               -o-transform: translateX( -100% ) rotateY( -180deg );
+                  transform: translateX( -100% ) rotateY( -180deg );
+        }
+
+
+
+
+    </style>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/angular/angular.min.js"></script>
+    <script src="/vendor/angular-route/angular-route.min.js"></script>
+</head>
+<body ng-app="loginApp">
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="SignUpContainer">
+              <div id="SignUpFormWrapper">
+                <div class="view front">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Login</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form name="loginForm" accept-charset="UTF-8"  novalidate ng-controller="loginValidation" ng-submit="loginUser()">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" 
+                                        placeholder="Gebruikersnaam" 
+                                        ng-model="user.name" 
+                                        name="username" 
+                                        type="text"
+                                        ng-class="{error: dirtyAndInvalid(loginForm.username)}"
+                                        ng-minLength=3
+                                        ng-maxlength=20 
+                                        required>
+
+                                    <div class="error-container" ng-show="signupForm.username.$dirty && signupForm.username.$invalid && !signupForm.username.$focused">
+                                        <small class="error" ng-show="signupForm.username.$error.required">Gebruikersnaam moet ingevuld worden.</small>
+                                    </div>
+                                </div>                        
+								<div class="form-group">
+                                    <input class="form-control" 
+                                        placeholder="Wachtwoord"  
+                                        name="password" 
+                                        type="password"
+                                        ng-model="user.password" 
+                                        required>
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                            </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    <div class="view back">
+
+  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">login is succesvol!</h3>
+            </div>
+            <div class="panel-body">
+                   <p>
+						U bent succesvol ingelogd.
+                   </p>
+                   <input class="btn btn-lg btn-success btn-block" type="submit" value="Profiel instellen">
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+<script src="/js/services/userService.js"></script>
+<script src="/js/controllers/loginController.js" ></script>
+</body>
+</html>

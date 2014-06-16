@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	express = require('express');
 
 exports.signup = function(request, response) {
 	response.sendfile( app.get('rootPath') + '/public/index.html');
@@ -29,21 +30,44 @@ exports.create = function(data, callback) {
 };
 
 /**
+* Logs a user in.
+**/
+exports.login = function(data, callback) {
+	
+	console.log("login executed!");
+};
+
+/**
 * Gets all users.
 **/
-exports.getAll = function(data, callback) {
+exports.getAll = function(callback) {
 	
 	User.find(function (err, users) {
 		if (err) {
 			throw err;
 		} else {
 			var userDetails = users.map(function(u){
-				return {name: u.username, email: u.email};
+				return {name: u.username, email: u.email, password: u.password};
 			});
 			
 			callback(userDetails);
 		}
 	});
+};
+
+
+/**
+ * Gets one user by name.
+ **/
+exports.get = function(username, callback) {
+
+    User.findOne({username: username},function (err, user) {
+        if (err) {
+            throw err;
+        } else {
+            callback( {name: user.username, email: user.email, password: user.password} );
+        }
+    });
 };
 
 function hasValidationErrors(err) {

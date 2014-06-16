@@ -13,6 +13,9 @@ angular.module('userService', [])
 			},
 			delete : function(id) {
 				return $http.delete('/api/user/delete/' + id);
+			},
+			login : function(data) {
+				return $http.post('/login', data);
 			}
 		};
 	});
