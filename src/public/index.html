@@ -38,6 +38,63 @@
 	<div class="footer">
 		<div class="lamba"><img src="images/ll_logo.png"/></div>
 	</div>
+
+	<script type="text/Javascript">
+
+	var clean = function() {
+
+	};
+
+	clean.prototype = {
+		   stripIllegalCharacters : function(movieTitle, replacementString) {
+		        return movieTitle.replace(/\.|_|\/|\+|\-/g, replacementString);
+		    },
+
+		    removeYearFromTitle : function(movieTitle) {
+		        var YEAR_REGEX = /(19[012356789]\d)|20[012346789]\d|\[|\]/g;
+		        return movieTitle.replace(YEAR_REGEX, "").replace(/\(|\)/g,'');
+		    },
+
+		    removeReleaseGroupNamesFromTitle : function(movieTitle) {
+		        return movieTitle.replace(
+		            /FxM|1 H|aAF|DD5|arc|AAC|XviD AFG|BLiND|MLR|AFO|TBFA|WEB DL|264 TB|WB|ARAXIAL|UNiVERSAL|ToZoon|PFa|SiRiUS|Rets|BestDivX|DIMENSION|CTU|ORENJI|LOL|juggs|NeDiVx|ESPiSE|MiLLENiUM|iMMORTALS|QiM|QuidaM|COCAiN|DOMiNO|JBW|LRC|WPi|NTi|SiNK|HLS|HNR|iKA|LPD|DMT|DvF|IMBT|LMG|DiAMOND|DoNE|D0PE|NEPTUNE|TC|SAPHiRE|PUKKA|FiCO|PAL|aXXo|VoMiT|ViTE|ALLiANCE|mVs|XanaX|FLAiTE|PREVAiL|CAMERA|VH-PROD|BrG|replica|FZERO/g,
+		            "");
+		    },
+
+		    removeMovieTypeFromTitle : function(movieTitle) {
+		        return movieTitle.replace(
+		            /dvdrip|multi9|xxx|HDDVD|H264|x264 DON|264 KiNGS|x264|AC3|web|hdtv|vhs|embeded|embedded|ac3|dd5 1|m sub|x264|dvd5|dvd9|multi sub|non|h264|x264| sub|subs|ntsc|ingebakken|torrent|torrentz|bluray|brrip|sample|xvid|cam|camrip|wp|workprint|telecine|ppv|ppvrip|scr|screener|dvdscr|bdscr|ddc|R5|telesync|pdvd|1080p|BDRIP|hq|sd|720p|hdrip/gi,
+		            "");
+		    },
+
+		    removeAudioTypesFromTitle : function(movieTitle) {
+		        return movieTitle.replace(
+		            /320kbps|192kbps|128kbps|mp3|320|192|128/gi,
+		            "");
+		    },
+
+		    removeCountryNamesFromTitle : function(movieTitle) {
+		        return movieTitle.replace(
+		            /NL|SWE|SWESUB|ENG|JAP|BRAZIL|TURKIC|slavic|SLK|ITA|HEBREW|HEB|ESP|RUS|DE|german|french|FR|ESPA|dansk|HUN/g,
+		            "");
+		    }
+	}
+
+	var c = new clean();
+
+	var title = "The.Sopranos.S05E11.The.Test.Dream.720p.WEB-DL.DD5.1.H.264-TB";
+
+	var cleanTitle = c.stripIllegalCharacters(title," ");
+	console.log(cleanTitle);
+	console.log( c.removeReleaseGroupNamesFromTitle(cleanTitle) );
+	var cleanTitle2 = c.removeReleaseGroupNamesFromTitle(cleanTitle);
+	console.log( c.removeMovieTypeFromTitle(cleanTitle2) );
+
+
+	var txt = "the sopranos  unidentified black males";
+	console.log(txt);
+	</script>
+
 	<!-- Javascripts -->
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/display.js"></script>
