@@ -35,7 +35,6 @@
     "karma-requirejs": "~0.2.1",
     "mongoose": "^3.8.11",
     "requirejs": "~2.1.11",
-    "downloader": "~0.1.2",
     "trakt": "0.0.6"
   }
 }

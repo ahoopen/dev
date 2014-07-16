@@ -6,6 +6,8 @@ coverage
 reports
 src/public/vendor
 
+.idea
+
 #################
 ## Eclipse
 #################
