@@ -112,26 +112,24 @@ module.exports = function(app) {
 
 	app.post('/login', function(req, res){
 	  authenticate(req.body.username, req.body.password, function(err, user){
-		var session = req.session;
-        var json = new API.JSONResponse();
-		
-		if(err || !user){
-            json.setStatus('success');
-            json.setPayload({
-                message : "Gebruiker is aangemaakt."
-            });
-		}
-		else{
-			session.regenerate(function(){
-				session.user = user;
 
-                json.setStatus('success');
-                json.setPayload( {
-                    message : "Gebruiker is aangemaakt."
-                } );
+		if(err ){
+            req.session.error = 'wachtwoord verkeerd!!';
+            res.redirect('/login');
+
+		}
+        else if(!user){
+            req.session.error = 'gebruiker onbekend!';
+            res.redirect('/register');
+
+        }
+		else{
+			req.session.regenerate(function(){
+				req.session.user = user;
+                req.session.success = 'logged in correctly!';
+                res.redirect('/restricted');
 			});
 		};
-        response.send( json.getResponse() );
 	  });
 	});
 	
