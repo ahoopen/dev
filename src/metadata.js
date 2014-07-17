@@ -13,6 +13,10 @@ mongoose.connect('mongodb://localhost/test');
 
  var Show = mongoose.model('Show');
 
+var totalFiles = 0,
+    nrScanned = 0;
+var start = new Date();
+
 /**
 *
 *
@@ -130,7 +134,7 @@ metadata.prototype = {
 
         nrScanned++;
 
-        var perc = parseInt((nrScanned / totalFiles) * 100);
+        var perc = parseInt((nrScanned / totalFiles),10) * 100;
         var increment = new Date(), difference = increment - start;
         if (perc > 0) {
             var total = (difference / perc) * 100, eta = total - difference;
@@ -198,20 +202,20 @@ metadata.prototype = {
                             throw err;
                         }
 
-                        console.log(data);
-
                         Show.get( data.show.title, function(err, result) {
                             console.log("tv show: ", data.show.title);
                             if(result) {
                                 Show.addEpisode(result[0], trimmedTitle, data.episode, callback);
                             } else {
+                                console.log(  data.images );
                                 // Maak de tv show aan
                                 Show.create( {
                                     title : data.show.title,
                                     summary : data.show.overview,
                                     genre : data.show.genres,
-                                    poster : data.images.poster
+                                    poster : data.show.images.poster
                                 }).then( function(tvshow) {
+                                    console.log( 'show created' );
                                     // tv show is aangemaakt, voeg daar nu de episode aan toe.
                                     Show.addEpisode(tvshow, data.episode, callback);
                                 }, function(err) {
@@ -239,10 +243,10 @@ metadata.prototype = {
 
             getMetadataFromTrakt(tvTitle, function(err, result){
                 if (err) {
-                    throw err
-                    console.error('Error returning Trakt data', err);
+                    throw err;
                 } else {
-                    var traktResult = result;
+                    var traktResult = result
+                        ,showTitleResult;
 
                     bannerImage = traktResult.images.banner;
                     showTitle = traktResult.title;
@@ -255,7 +259,7 @@ metadata.prototype = {
                             certification = traktResult.certification;
                         }
                         if(traktResult.title !== undefined){
-                            var showTitleResult = traktResult.title;
+                            showTitleResult = traktResult.title;
                         }
                     }
 
@@ -318,32 +322,34 @@ metadata.prototype = {
 };
 
 
-var totalFiles = 0,
-    nrScanned = 0;
-var start = new Date();
+
 
 
      Show.getAllShows().then( function(data) {
          console.log( data );
-         /*
-         Show.getSeason('Breaking Bad', 2).then( function(data) {
+
+         Show.getSeason('Suits', 1).then( function(data) {
             console.log( data );
          });
-     */        
+
      });
 
-     /*
 
-exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Homeland/', ['.mkv', '.mp4', '.avi'], function(err, files) {
+
+
+/*
+exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Suits/', ['.mkv', '.mp4', '.avi'], function(err, files) {
   totalFiles = (files) ? files.length : 0;
   
   console.log("Start met het indexeren van ", totalFiles, " bestanden.");
   var meta = new metadata();
-      //meta.parse(files);
+  meta.parse(files);
 
 
 
 
 
 });
+
 */
+

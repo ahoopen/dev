@@ -20,6 +20,7 @@ module.exports = function(grunt) {
         '!src/public/vendor/**/*.js'
       ],
       options: {
+        reporter: require('jshint-stylish'),
         curly: true,
         eqeqeq: true,
         immed: true,
@@ -31,13 +32,16 @@ module.exports = function(grunt) {
         /* toe staan om parameter aan een exception toe te voegen  */
         "-W022": true,
         sub: true,
+        // nodig voor de promise objecten van mongoose.
+        "-W058" : true,
         undef: true,
         boss: true,
+        laxcomma : true,
         eqnull: true,
         node : true,
         browser: true,
         globals: {
-		      exports: true,
+		  exports: true,
           require: true,
           define: true,
           requirejs: true,
@@ -168,19 +172,20 @@ module.exports = function(grunt) {
         },
         files: ['<%= jshint.src %>','src/**/*.js'],
         tasks: ['jshint']
-      },
-
-      karma : {
-        files: ['src/**/*.js', 'tests/**/*.js'],
-        tasks: ['karma:unit:run']
       }
+
+
+      //karma : {
+      //  files: ['src/**/*.js', 'tests/**/*.js'],
+      //  tasks: ['karma:unit:run']
+      //}
     }
 
 
   });
 	
   grunt.registerTask('dev', [ 
-    'karma:unit:start',
+    //'karma:unit:start',
     'watch'
     /*'notify:dev' */
   ]);

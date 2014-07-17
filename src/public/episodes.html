@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body ng-app="screenApp" ng-controller="EpisodeList">
+
+    <div class="container">
+        <div class="media" ng-repeat="episode in episodes">
+            <a href="#" class="pull-left">
+                <img width="200" height="200" ng-src="{{episode.screen}}" class="img-thumbnail" />
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">{{episode.title}}</h4>
+                <p>{{episode.summary}}</p>
+            </div>
+            <hr />
+        </div>
+
+    </div>
+
+<script src="/vendor/angular/angular.min.js"></script>
+<script src="/vendor/angular-route/angular-route.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services/showService.js"></script>
+<script src="js/controllers/EpisodeController.js"></script>
+</body>
+</html>

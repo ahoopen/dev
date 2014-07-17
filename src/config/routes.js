@@ -1,7 +1,7 @@
 
 // controllers
-var home = require('../app/controllers/home'),
-	user = require('../app/controllers/Users'),
+var user = require('../app/controllers/Users'),
+    show = require('../app/controllers/Show'),
 	API = require('../app/JSONResponse');
 
 module.exports = function(app) {
@@ -13,7 +13,7 @@ module.exports = function(app) {
 			req.session.error = 'Access denied!';
 			res.redirect('/login');
 		}
-	};	
+	}
 
 	app.get('/', function(request, response) {
 		response.sendfile( app.get('rootPath') + '/public/angular.html');
@@ -72,14 +72,13 @@ module.exports = function(app) {
 				json.setPayload( {
 					message : "Gebruiker is aangemaakt."
 				} );
-				response.send( json.getResponse() );
 			} else {
 				json.setStatus('failed');
 				json.setPayload( {
 					message : "Gebruiker kon niet aangemaakt worden."
 				} );
-				response.send( json.getResponse() );
 			}
+            response.send( json.getResponse() );
 		});
 	});
 
@@ -130,14 +129,16 @@ module.exports = function(app) {
                     message : "Gebruiker is aangemaakt."
                 } );
 			});
-		};
-        response.send( json.getResponse() );
+		}
+        res.send( json.getResponse() );
 	  });
 	});
 	
 	function authenticate(name, pass, fn) {
 		
-		if (!module.parent) console.log('authenticating %s:%s', name, pass);
+		if (!module.parent) {
+            console.log('authenticating %s:%s', name, pass);
+        }
 		
 		user.get(name, function(result){
 			if(result){
@@ -149,11 +150,92 @@ module.exports = function(app) {
 				}
 				else if (usr.password !== pass){
 					error = new Error('invalid password');
-				};
+				}
 				
 				return fn(error, usr);
-			};
+			}
 		});	
-	};
+	}
+
+
+    /***
+     *  API show requests
+     */
+
+    app.get('/shows', function(request, response) {
+        response.sendfile( app.get('rootPath') + '/public/show.html');
+    });
+
+    app.get('/episodes', function(request, response) {
+        response.sendfile( app.get('rootPath') + '/public/episodes.html');
+    });
+
+    app.get('/seasonList', function(request, response) {
+        var json = new API.JSONResponse();
+
+        var ret = show.getAllSeasons('Suits')
+            .then( function(result) {
+                json.setStatus('success');
+                json.setPayload(result);
+            }, function(err) {
+                json.setStatus('failed');
+                json.setPayload( {
+                    message : 'failed to get season list'
+                });
+            });
+
+        ret.then( function() {
+            response.send( json );
+        });
+    });
+
+    /**
+     *
+     */
+    app.get('/api/show', function(request, response) {
+        var json = new API.JSONResponse();
+
+        var shows = show.getAll()
+            .then( function(result) {
+                json.setStatus('success');
+                json.setPayload( result );
+            }, function(err) {
+                json.setStatus('failed');
+                json.setPayload( {
+                    message : "failed to get shows"
+                } );
+            });
+
+       // wanneer het promise object een status heeft
+       // geef dan een json response terug.
+       shows.then( function() {
+           response.send( json );
+       });
+    });
+
+    /**
+     * Geef d
+     */
+    app.post('/api/show/:id/:season', function(request, response) {
+        var title = request.body.title,
+            season = parseInt( request.body.season, 10),
+            json = new API.JSONResponse();
+
+
+        var ret = show.getSeason( title, season )
+            .then( function( result ) {
+                json.setStatus('success');
+                json.setPayload( result );
+            }, function( errr) {
+                json.setStatus('failed');
+                json.setPayload( {
+                    message : "failed to get show season"
+                });
+            });
+
+        ret.then( function() {
+            response.send( json );
+        });
+    });
 
 };

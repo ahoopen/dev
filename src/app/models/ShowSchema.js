@@ -122,6 +122,42 @@ ShowSchema.statics.getAllShows = function() {
 };
 
 /**
+ * Geeft terug hoeveel seizoenen er zijn van de desbetreffende serie.
+ *
+ * @param title
+ * @returns {mongoose.Promise}
+ */
+ShowSchema.statics.getAvailableSeasons = function( title ) {
+    var promise = new mongoose.Promise,
+        seasons = [];
+
+    this.findOne( { title : title } )
+        .populate('episodes')
+        .exec( function(err, result) {
+            if(err) {
+                promise.error( err );
+            }
+
+            if( result !== null && typeof result.episodes !== 'undefined' ) {
+                result.episodes.filter( function(episode) {
+                    if( seasons.indexOf( episode.season ) === -1 ) {
+                        seasons.push( episode.season );
+                    }
+                });
+
+                promise.complete( {
+                    seasons    : seasons.length
+                } );
+            }
+
+            // geen data gevonden
+            promise.error(null);
+        });
+
+    return promise;
+};
+
+/**
 * Geeft een tv show terug met daarbij alle afleveringen gefilterd op het seizoens nummer.
 * 
 * @param {String} title De titel van de tvshow
@@ -138,26 +174,31 @@ ShowSchema.statics.getSeason = function( title, season) {
         if(err) {
             promise.error( err );
         }
-        
-        // filter de episodes op het seizoen
-        var episodes = result.episodes.filter(function(episode){
-            if ( episode.season === season ) {
-                return episode;
-            }
-        }).sort( function(a, b) {
-            if( a.number < b.number ) {
-                return -1;
-            } else if( a.number > b.number) {
-                return 1;
-            }
-            return 0;
-        });
 
-        promise.complete( {
-        	title : result.title,
-        	summary : result.summary,
-        	episodes : episodes
-        } );
+        if( result !== null && typeof result.episodes !== 'undefined' ) {
+            // filter de episodes op het seizoen
+            var episodes = result.episodes.filter(function (episode) {
+                if (episode.season === season) {
+                    return episode;
+                }
+            }).sort(function (a, b) {
+                if (a.number < b.number) {
+                    return -1;
+                } else if (a.number > b.number) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            promise.complete( {
+                title    : result.title,
+                summary  : result.summary,
+                episodes : episodes
+            } );
+        }
+
+        // geen data gevonden
+        promise.error(null);
     });
 
     return promise;
@@ -188,7 +229,7 @@ ShowSchema.statics.addEpisode = function(show, orginaleTitle, episode, callback)
 			}
 			callback();
 		});
-	})
+	});
 };
 
 
