@@ -8,14 +8,15 @@ var app = angular.module('loginApp', ['userService'])
 		* 
 		**/
 		$scope.loginUser = function() {
-			var formData = {
+
+            var formData = {
 				username : $scope.user.name,
 				password : $scope.user.password
 			};
 
 			User.login(formData)
 			.succes(function(data) {
-				console.log('succes!', data);
+                    $location.path('');
 			})
 			.error(function(err) {
 				// fout opgetreden

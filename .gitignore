@@ -6,7 +6,10 @@ coverage
 reports
 src/public/vendor
 
-.idea
+################
+# Webstorm
+################
+*.idea
 
 #################
 ## Eclipse
