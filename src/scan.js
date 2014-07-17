@@ -51,7 +51,7 @@ var getFiles = function(dir, extensions, callback) {
 };
 
 
-getFiles('/files', ['.mkv', '.mp4', '.avi'], function(err, files) {
+getFiles('/Volumes/Seagate Backup Plus Drive/series/', ['.mkv', '.mp4', '.avi'], function(err, files) {
   // doe iets met bestanden die de extensie, .txt en .mp4 hebben
   console.log(files);
 });
