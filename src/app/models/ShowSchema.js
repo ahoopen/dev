@@ -1,6 +1,7 @@
 
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+    Cache = require('../../cache');
 
 var ObjectId = mongoose.SchemaTypes.ObjectId;
 
@@ -210,26 +211,32 @@ ShowSchema.statics.getSeason = function( title, season) {
 ShowSchema.statics.addEpisode = function(show, orginaleTitle, episode, callback) {
 	var Episode = mongoose.model('Episode');
 
-	var ep = new Episode( {
-		title : episode.title,
-		orginalTitle : orginaleTitle,
-		season : episode.season,
-		number : episode.number,
-		summary : episode.overview,
-		screen : episode.images.screen
-	});
-	ep.save( function(err) {
-		if(err) {
-			throw err;
-		}
-		show.episodes.push( { '_id' : ep._id } );
-		show.save( function(err) {
-			if(err) {
-				throw err;
-			}
-			callback();
-		});
-	});
+    //
+    Cache.save(episode.images.screen, show.title)
+    .then( function(imageLocation) {
+        var ep = new Episode( {
+            title : episode.title,
+            orginalTitle : orginaleTitle,
+            season : episode.season,
+            number : episode.number,
+            summary : episode.overview,
+            screen : imageLocation
+        });
+        ep.save( function(err) {
+            if(err) {
+                throw err;
+            }
+            show.episodes.push( { '_id' : ep._id } );
+            show.save( function(err) {
+                if(err) {
+                    throw err;
+                }
+                callback();
+            });
+        });
+    }, function(err) {
+        throw err;
+    });
 };
 
 
@@ -249,8 +256,9 @@ EpisodeSchema.pre('save', function(next, done) {
 				// nieuwe record ga door met opslaan
 				next();
 			} else {
-				console.log( "bestaat al!");
-				done();
+				//console.log( "bestaat al!");
+				//done();
+                next();
 			}
 		});
 });

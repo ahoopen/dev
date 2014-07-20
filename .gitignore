@@ -5,6 +5,7 @@ node_modules
 coverage
 reports
 src/public/vendor
+src/public/cache/*
 
 ################
 # Webstorm

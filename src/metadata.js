@@ -1,7 +1,9 @@
 var Trakt = require('trakt'),
     path = require('path'),
     fs = require('fs'),
-    async = require('async');
+    async = require('async'),
+    c = require('./cache'),
+    Cache = new c.Cache();
 
     require('./app/models/ShowSchema');
 
@@ -52,7 +54,7 @@ var getFiles = function(dir, extensions, callback) {
           extensions.forEach( function( extension ) {
             // bestand komt overeen met file extensie.
             if ( file.indexOf(extension, file.length - extension.length) !== -1 ) {
-              returnFiles.push( { filename: file, location: filePath } );
+                returnFiles.push( { filename: file, location: filePath } );
             }
           });
 
@@ -195,8 +197,6 @@ metadata.prototype = {
                         episode: episodeNumber
                     };
 
-                    console.log("Options: ",opt);
-
                     getEpisodeInfoFromTrakt(opt, function(err, data){
                         if(err) {
                             throw err;
@@ -207,21 +207,25 @@ metadata.prototype = {
                             if(result) {
                                 Show.addEpisode(result[0], trimmedTitle, data.episode, callback);
                             } else {
-                                console.log(  data.images );
-                                // Maak de tv show aan
-                                Show.create( {
-                                    title : data.show.title,
-                                    summary : data.show.overview,
-                                    genre : data.show.genres,
-                                    poster : data.show.images.poster
-                                }).then( function(tvshow) {
-                                    console.log( 'show created' );
-                                    // tv show is aangemaakt, voeg daar nu de episode aan toe.
-                                    Show.addEpisode(tvshow, data.episode, callback);
-                                }, function(err) {
-                                    console.log("Error: episode info kon niet opgehaald worden voor, ", data.show.title);
-                                    callback();
-                                });
+                                Cache.save(data.show.images.poster , data.show.title)
+                                    .then( function( location) {
+                                        // Maak de tv show aan
+                                        Show.create( {
+                                            title : data.show.title,
+                                            summary : data.show.overview,
+                                            genre : data.show.genres,
+                                            poster : location
+                                        }).then( function(tvshow) {
+                                            console.log( 'show created' );
+                                            // tv show is aangemaakt, voeg daar nu de episode aan toe.
+                                            Show.addEpisode(tvshow, data.episode, callback);
+                                        }, function(err) {
+                                            console.log("Error: episode info kon niet opgehaald worden voor, ", data.show.title);
+                                            callback();
+                                        });
+                                    },function(err) {
+
+                                    });
                             }
                         });
                         
@@ -323,23 +327,70 @@ metadata.prototype = {
 
 
 
-
+/*
 
      Show.getAllShows().then( function(data) {
-         console.log( data );
+         // console.log( data );
 
-         Show.getSeason('Suits', 1).then( function(data) {
-            console.log( data );
+         Show.getSeason('Suits', 2).then(function (data) {
+
+             //console.log( data );
+
+             for (var i = 0, len = data.episodes.length; i < len; i++) {
+
+                 /*
+                  Episode.update( { _id : data._id }, {
+                    screen : path
+                  }, function( err, numberAffected, rawResponse) {
+                    if(err) {
+                    throw err;
+                    }
+                    //handle it
+                    console.log( numberAffected, rawResponse);
+                  });
+
+                  /*
+
+                  if( data != null ) {
+                  Episode.findOne( { _id : data._id } )
+                  .exec( function(err, Episode) {
+                  console.log(Episode);
+                  Episode.screen = path;
+                  Episode.save( function(err) {
+                  if(err) {
+                  console.log(err);
+                  }
+                  console.log("updated episode", this.screen);
+                  });
+                  });
+                  }
+
+
+                  });
+
+                 //Cache.save(data.title, data.episodes[i], data, function (path, data) {
+                Cache.save("the big big theory", data.episodes[i])
+                    .then( function(path, data ) {
+                        console.log( "---->", path, data );
+                    }, function(err) {
+                        console.log(err);
+                    });
+
+             }
+
          });
 
      });
 
-
-
-
+ */
 /*
-exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Suits/', ['.mkv', '.mp4', '.avi'], function(err, files) {
-  totalFiles = (files) ? files.length : 0;
+
+exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Breaking Bad', ['.mkv', '.mp4', '.avi'], function(err, files) {
+    if(err) {
+        throw err;
+    }
+
+    totalFiles = (files) ? files.length : 0;
   
   console.log("Start met het indexeren van ", totalFiles, " bestanden.");
   var meta = new metadata();
@@ -352,4 +403,6 @@ exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Suits/', 
 });
 
 */
+
+
 

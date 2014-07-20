@@ -31,6 +31,10 @@ angular.module('showService', [])
                         season: season
                     }
                 });
+            },
+
+            getAllSeasons : function( title ) {
+                return $http.get('seasonList');
             }
         };
     });

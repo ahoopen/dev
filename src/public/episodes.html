@@ -8,16 +8,29 @@
 <body ng-app="screenApp" ng-controller="EpisodeList">
 
     <div class="container">
-        <div class="media" ng-repeat="episode in episodes">
-            <a href="#" class="pull-left">
-                <img width="200" height="200" ng-src="{{episode.screen}}" class="img-thumbnail" />
-            </a>
-            <div class="media-body">
-                <h4 class="media-heading">{{episode.title}}</h4>
-                <p>{{episode.summary}}</p>
-            </div>
-            <hr />
+        <!-- menu -->
+        <div class="col-md-3">
+            <ul class="list-group" >
+                <li class="list-group-item" ng-repeat="season in seasons">Seizoen {{season}}</li>
+            </ul>
         </div>
+
+        <div class="col-md-6">
+            <hr />
+            <div class="media" ng-repeat="episode in episodes">
+                <a href="#" class="pull-left">
+                    <img width="200" height="200" ng-src="{{episode.screen}}" class="img-thumbnail" />
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">{{episode.title}}</h4>
+                    <p>{{episode.summary}}</p>
+                </div>
+                <hr />
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+
+
 
     </div>
 
