@@ -11,7 +11,6 @@ angular.module('EpisodeController', [])
 
         ShowService.getSeason('Suits', 1)
             .then( function( res ) {
-                console.log(res.data.response.data);
                 $scope.episodes =  res.data.response.data.episodes;
             }, function(err) {
 

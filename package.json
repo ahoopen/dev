@@ -9,8 +9,10 @@
     "socket.io": "0.9.14"
   },
   "devDependencies": {
+    "adm-zip": "^0.4.4",
     "async": "^0.9.0",
     "bower": "latest",
+    "downloader": "^0.1.2",
     "fs-extra": "^0.10.0",
     "growly": "~1.1.1",
     "grunt": "latest",
@@ -37,7 +39,10 @@
     "karma-requirejs": "~0.2.1",
     "mongoose": "^3.8.11",
     "q": "^1.0.1",
+    "request": "^2.38.0",
     "requirejs": "~2.1.11",
-    "trakt": "0.0.6"
+    "rimraf": "^2.2.8",
+    "trakt": "0.0.6",
+    "wget": "0.0.1"
   }
 }

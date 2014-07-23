@@ -214,7 +214,7 @@ module.exports = function(app) {
     });
 
     /**
-     * Geef d
+     *
      */
     app.post('/api/show/:id/:season', function(request, response) {
         var title = request.body.title,

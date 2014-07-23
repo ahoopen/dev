@@ -211,31 +211,25 @@ ShowSchema.statics.getSeason = function( title, season) {
 ShowSchema.statics.addEpisode = function(show, orginaleTitle, episode, callback) {
 	var Episode = mongoose.model('Episode');
 
-    //
-    Cache.save(episode.images.screen, show.title)
-    .then( function(imageLocation) {
-        var ep = new Episode( {
-            title : episode.title,
-            orginalTitle : orginaleTitle,
-            season : episode.season,
-            number : episode.number,
-            summary : episode.overview,
-            screen : imageLocation
-        });
-        ep.save( function(err) {
+    var ep = new Episode( {
+        title : episode.title,
+        orginalTitle : orginaleTitle,
+        season : episode.season,
+        number : episode.number,
+        summary : episode.overview,
+        screen : episode.screen
+    });
+    ep.save( function(err) {
+        if(err) {
+            throw err;
+        }
+        show.episodes.push( { '_id' : ep._id } );
+        show.save( function(err) {
             if(err) {
                 throw err;
             }
-            show.episodes.push( { '_id' : ep._id } );
-            show.save( function(err) {
-                if(err) {
-                    throw err;
-                }
-                callback();
-            });
+            callback();
         });
-    }, function(err) {
-        throw err;
     });
 };
 
