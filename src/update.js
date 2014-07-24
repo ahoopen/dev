@@ -1,16 +1,40 @@
-var child_process = require('child_process'),
-    fs = require('fs-extra'),
+var fs = require('fs-extra'),
     Q = require('q'),
     wget = require('wget'),
     AdmZip = require("adm-zip"),
     config = require('./config/config');
 
+/**
+ * Update zorgt ervoor dat de update gedownload word, unzipped en geinstalleerd.
+ * Na de installatie, worden alle dependencies geinstalleerd. (bower en node)
+ *
+ * @type {{prepare: prepare, download: download, unzip: unzip, install: install, nodeInstall: nodeInstall, bowerInstall: bowerInstall, clean: clean}}
+ */
+exports =  {
 
-var update = function() {
-
-};
-
-update.prototype =  {
+    /**
+     * Voert de update in stappen uit. Het downloaden, uitpakken en het installeren.
+     */
+    run : function( callback ) {
+        var update = this;
+        console.log(this);
+        update.download( config.update.location )
+            .then( function( data ) {
+                console.log("unzipping update..");
+                return update.unzip(data);
+            })
+            .then( function() {
+                console.log("begin met install....");
+                return update.install();
+            })
+            .then( function() {
+                console.log("update geinstalleerd!");
+                callback();
+            })
+            .progress( function( progress ) {
+                console.log( progress );
+            });
+    },
 
     /**
      *  Zorgt ervoor dat de 'install' map bestaat zodat de update gedownload
@@ -35,8 +59,7 @@ update.prototype =  {
     download : function( url ) {
         console.log("Update aan het downloaden.");
 
-        var deferred = Q.defer(),
-            self = this;
+        var deferred = Q.defer();
 
         // bereid de update voor.
         this.prepare();
@@ -46,9 +69,6 @@ update.prototype =  {
            deferred.reject(err);
         });
         download.on('end', function(output) {
-            setTimeout( function() {
-                self.unzip( output );
-            }, 2500 );
             deferred.resolve(output);
         });
         download.on('progress', function(progress) {
@@ -59,19 +79,21 @@ update.prototype =  {
     },
 
     /**
+     * Pakt het zip bestand uit in de installatie folder.
      *
      * @param output
      */
     unzip : function(output) {
-        console.log("Unzipping nieuwe versie");
+        var zip = new AdmZip(output),
+            deferred = Q.defer();
 
-        var zip = new AdmZip(output);
         zip.extractAllTo( config.update.folder, true);
 
-        var self = this;
         setTimeout( function() {
-            self.install();
-        }, 1000 );
+            deferred.resolve();
+        }, 2500 );
+
+        return deferred.promise;
     },
 
     /**
@@ -81,13 +103,13 @@ update.prototype =  {
      *
      */
     install : function() {
-        var self = this;
+        var self = this,
+            deferred = Q.defer();
 
         fs.copy('./install/dev-master', config.update.target, function(err) {
            if(err) {
                throw err;
            } else {
-               console.log('update succesvol');
                // clean
                self.clean( config.update.folder );
 
@@ -95,12 +117,15 @@ update.prototype =  {
                    self.nodeInstall(),
                    self.bowerInstall()
                ]).then( function() {
-                    console.log('update is klaar met installeren!');
+                   deferred.resolve(true);
                }, function(err) {
                    // installatie bevat fouten
+                   deferred.reject(err);
                });
             }
         });
+
+        return deferred.promise;
     },
 
     /**
@@ -121,7 +146,7 @@ update.prototype =  {
             });
 
         child.on('exit', function() {
-            console.log('Klaar met installeren node dependencies');
+            // Klaar met installeren node dependencies
             deferred.resolve(true);
         });
 
@@ -138,7 +163,7 @@ update.prototype =  {
         var process = require('child_process');
 
         process.spawn('bower', ['install'],{ cwd: config.update.target }).on('close', function(data) {
-            console.log('bower install complete');
+            // klaar met installeren bower dependencies.
             deferred.resolve(true);
         });
 
@@ -159,10 +184,3 @@ update.prototype =  {
         });
     }
 };
-
-
-var u = new update();
-u.download( config.update.location )
-    .progress( function( progress ) {
-        console.log( progress );
-    });

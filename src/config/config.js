@@ -1,7 +1,3 @@
-/*!
- * Module dependencies.
- */
-
 var path = require('path'),
  	rootPath = path.resolve(__dirname + '../..');
 
@@ -31,5 +27,10 @@ module.exports = {
         output : "./install/update.zip",
         // de locatie waar de update geinstalleerd word.
         target : "./../"
+    },
+
+    schedule : {
+        // tijd waarop er gekeken wordt of er een update beschikbaar is.
+        update : "04:00"
     }
 };
