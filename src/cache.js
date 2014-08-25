@@ -8,11 +8,8 @@ var fs = require('fs-extra'),
  *  een cache directory. Daarnaast wordt elke episode geupdate, zodat de afbeelding
  *  verwijst naar de gecachde afbeelding.
  */
-var cache = function() {
-    this.version = "0.0.1";
-};
 
-cache.prototype = {
+exports.cache = {
 
     /**
      * Creeer
@@ -47,10 +44,9 @@ cache.prototype = {
      * @param episode
      * @returns {Promise.promise|*}
      */
-    save : function(folder, episode) {
+    save : function(folder, file) {
         var deferred = Q.defer(),
             dir = 'public/cache/' + folder.replace(/ /g,"-"),
-            file = episode.screen,
             filePath = dir + '/' + this.getFileName(file);
 
         // garandeer dat de directory bestaat.
@@ -71,7 +67,7 @@ cache.prototype = {
                     if (err) {
                         deferred.reject(err);
                     }
-                    deferred.resolve( { path: filePath, data : episode } );
+                    deferred.resolve( { path: filePath } );
                 });
             });
         });
@@ -97,7 +93,4 @@ cache.prototype = {
 
         return deferred.promise;
     }
-
 };
-
-exports.Cache = cache;

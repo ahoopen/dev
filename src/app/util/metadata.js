@@ -1,6 +1,7 @@
 var Trakt = require('trakt'),
     fs = require('fs'),
     Q = require('q'),
+    Cache = require('./../../cache').cache,
     polyfill = require('./polyfill'),
     config = require('./../../config/config'),
     tvTitleCleaner = require('./../../filename-cleaner'),
@@ -150,10 +151,14 @@ exports.metadata = {
                                 if(err) {
                                     throw err;
                                 }
-                                showData.push( self.createMediaObject(file, result) );
-                                self.notifyProgress('COLLECTING METADATA');
 
-                                var qw = data.length > 0 ? next(data) : deferred.resolve(showData);
+                                self.createMediaObject(file, result)
+                                    .then( function( media ) {
+                                        showData.push( media );
+                                        self.notifyProgress('COLLECTING METADATA');
+
+                                        var qw = data.length > 0 ? next(data) : deferred.resolve(showData);
+                                    });
                             });
                         } else {
                             var qw = data.length > 0 ? next(data) : deferred.resolve(showData);
@@ -168,25 +173,39 @@ exports.metadata = {
         return deferred.promise;
     },
 
+    /**
+     *
+     *
+     * @param file
+     * @param result
+     * @returns {Promise.promise|*}
+     */
     createMediaObject : function(file, result) {
-        return {
-            show: {
-                title: result.show.title,
-                summary: result.show.overview,
-                image: result.show.images.poster,
-                genres: result.show.genres,
-                rating: result.show.ratings.percentage
-            },
-            episode: {
-                title: result.episode.title,
-                number: result.episode.number,
-                season: result.episode.season,
-                summary: result.episode.overview,
-                image: result.episode.images.screen,
-                rating: result.episode.ratings.percentage,
-                location : file.location
-            }
-        };
+        var deferred = Q.defer();
+
+        Cache.save( result.show.title, result.episode.images.screen)
+            .then( function( image ) {
+                deferred.resolve( {
+                    show: {
+                        title: result.show.title,
+                        summary: result.show.overview,
+                        image: result.show.images.poster,
+                        genres: result.show.genres,
+                        rating: result.show.ratings.percentage
+                    },
+                    episode: {
+                        title: result.episode.title,
+                        number: result.episode.number,
+                        season: result.episode.season,
+                        summary: result.episode.overview,
+                        image: image.path,
+                        rating: result.episode.ratings.percentage,
+                        location : file.location
+                    }
+                } );
+            });
+
+        return deferred.promise;
     },
 
     /**
@@ -216,7 +235,6 @@ exports.metadata = {
     },
 
     saveToDB : function( data, callback ) {
-        console.log( data.show.title + " - " + data.episode.title );
 
         Show.get( data.show.title, function(err, result) {
             if(result) {

@@ -245,7 +245,7 @@ EpisodeSchema.pre('save', function(next, done) {
 	var Episode = mongoose.model('Episode');
 
 	// bestaat de episode al in de database?
-	Episode.find( { title : self.title, number : self.number, season : self.season })
+	Episode.find( { title : self.title, number : self.number, season : self.season, location : self.location })
 		.exec( function(err, result) {
 			if(!result.length) {
 				// nieuwe record ga door met opslaan

@@ -2,8 +2,7 @@ var Trakt = require('trakt'),
     path = require('path'),
     fs = require('fs'),
     async = require('async'),
-    c = require('./cache'),
-    Cache = new c.Cache();
+    Cache = require('./cache').cache;
 
     require('./app/models/ShowSchema');
 
