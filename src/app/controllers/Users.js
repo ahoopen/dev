@@ -70,6 +70,38 @@ exports.get = function(username, callback) {
     });
 };
 
+exports.authenticate = function(name, pass, fn) {
+
+    if (!module.parent) {
+        console.log('authenticating %s:%s', name, pass);
+    }
+
+    exports.get(name, function(result){
+        if(result){
+            var usr = result;
+            var error = null;
+
+            if (!usr){
+                error = new Error('invalid username');
+            }
+            else if (usr.password !== pass){
+                error = new Error('invalid password');
+            }
+
+            return fn(error, usr);
+        }
+    });
+};
+
+exports.restrict = function(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        req.session.error = 'Access denied!';
+        res.redirect('/login');
+    }
+};
+
 function hasValidationErrors(err) {
 	console.log('err', err);
 	if (err.name === 'ValidationError') {

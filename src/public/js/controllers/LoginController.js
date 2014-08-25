@@ -16,6 +16,8 @@ var app = angular.module('loginApp', ['userService'])
 
 			User.login(formData)
                 .success(function(data, status, headers, config) {
+
+                    $location.path('restricted');
                     //succes, do stuff.
 
                 })

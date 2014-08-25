@@ -6,15 +6,6 @@ var show = require('../app/controllers/Show'),
 
 module.exports = function(app) {
 
-	function restrict(req, res, next) {
-		if (req.session.user) {
-			next();
-		} else {
-			req.session.error = 'Access denied!';
-			res.redirect('/login');
-		}
-	}	
-
 	app.get('/', function(request, response) {
 		response.sendfile( app.get('rootPath') + '/public/angular.html');
 	});
@@ -73,6 +64,7 @@ module.exports = function(app) {
 					message : "Gebruiker is aangemaakt."
 				} );
 				response.send( json.getResponse() );
+
 			} else {
 				json.setStatus('failed');
 				json.setPayload( {
@@ -94,8 +86,8 @@ module.exports = function(app) {
 		response.sendfile( app.get('rootPath') + '/public/register.html');
 	});
 
-	app.get('/restricted', restrict, function(req, res){
-		res.send('Wahoo! restricted area, click to <a href="/logout">logout</a>');
+	app.get('/restricted', user.restrict, function(req, res){
+        res.sendfile( app.get('rootPath') + '/public/restricted.html');
 	});
 
 	app.get('/logout', function(req, res){
@@ -106,60 +98,23 @@ module.exports = function(app) {
 	  });
 	});
 
-	app.get('/login', function(request, response){
-		response.sendfile( app.get('rootPath') + '/public/login.html');
+	app.get('/login', function(req, res){
+		res.sendfile( app.get('rootPath') + '/public/login.html');
 	});
 
 	app.post('/login', function(req, res){
-
-	  authenticate(req.body.username, req.body.password, function(err, user){
-        var json = new API.JSONResponse();
-		
-		if(err || !user){
-            json.setStatus('error');
-            json.setPayload({
-                message : "Er is een fout opgetreden."
-            });
-
-            res.send(json);
-		}
-		else{
-            req.session.regenerate(function(){
-                req.session.user = user;
-
-                json.setStatus('success');
-                json.setPayload( {
-                    message : "Gebruiker is aangemaakt."
-                } );
-
-                res.send(json);
-			});
-		}
+        user.authenticate(req.body.username, req.body.password, function(err, user){
+            if(err || !user){
+                res.status(401).send('Wachtwoord of gebruiker niet correct.');
+            }
+            else{
+                req.session.regenerate(function(){
+                    req.session.user = user;
+                    res.status(200).send('Wachtwoord en gebruiker correct.');
+                });
+            }
 	  });
 	});
-	
-	function authenticate(name, pass, fn) {
-		
-		if (!module.parent) {
-            console.log('authenticating %s:%s', name, pass);
-        }
-		
-		user.get(name, function(result){
-			if(result){
-				var usr = result;
-				var error = null;
-				
-				if (!usr){
-					error = new Error('invalid username');
-				}
-				else if (usr.password !== pass){
-					error = new Error('invalid password');
-				}
-				
-				return fn(error, usr);
-			}
-		});	
-	}
 
 
     /***
