@@ -46,7 +46,7 @@ exports.cache = {
      */
     save : function(folder, file) {
         var deferred = Q.defer(),
-            dir = 'public/cache/' + folder.replace(/ /g,"-"),
+            dir = 'cache/' + folder.replace(/ /g,"-"),
             filePath = dir + '/' + this.getFileName(file);
 
         // garandeer dat de directory bestaat.
