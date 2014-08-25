@@ -116,10 +116,12 @@ module.exports = function(app) {
         var json = new API.JSONResponse();
 		
 		if(err || !user){
-            json.setStatus('success');
+            json.setStatus('error');
             json.setPayload({
-                message : "Gebruiker is aangemaakt."
+                message : "Er is een fout opgetreden."
             });
+
+            res.send(json);
 		}
 		else{
 			session.regenerate(function(){
@@ -129,6 +131,8 @@ module.exports = function(app) {
                 json.setPayload( {
                     message : "Gebruiker is aangemaakt."
                 } );
+
+                res.send(json);
 			});
 		}
 	  });

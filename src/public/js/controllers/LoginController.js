@@ -15,12 +15,16 @@ var app = angular.module('loginApp', ['userService'])
 			};
 
 			User.login(formData)
-			.succes(function(data) {
-                    $location.path('');
-			})
-			.error(function(err) {
-				// fout opgetreden
-			});
+                .success(function(data, status, headers, config) {
+                    //succes, do stuff.
+
+                })
+                .error(function(data, status, headers, config) {
+
+                    var a = data;
+                    //probleem, fix stuff.
+                });
+
 		};
 
 		$scope.dirtyAndInvalid = function(field) {

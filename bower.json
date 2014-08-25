@@ -3,7 +3,6 @@
   "dependencies": {
     "bootstrap": "~3.1.1",
     "requirejs": "~2.1.14",
-    "quojs": "~3.0.2",
     "angular": "*",
     "angular-route": "~1.2.16"
   }
