@@ -1,6 +1,7 @@
-var scheduler = require('./schedule'),
-    update = require('./update'),
-    version = require('./version'),
+var scheduler = require('./schedule').schedule,
+    update = require('./update').update,
+    version = require('./version').version,
+    metadata = require('./app/util/metadata').metadata,
     config = require('./config/config');
 
 var workflow = function() {
@@ -14,7 +15,8 @@ workflow.prototype = {
     },
 
     /**
-     *
+     * Update workflow kijkt of er een nieuwe versie beschikbaar is.
+     * Indien dit het geval is, word het update systeem gedraaid.
      */
     update : function() {
         // check of er een nieuwe versie beschikbaar is
@@ -23,7 +25,7 @@ workflow.prototype = {
                 if(newVersion) {
                     // voer de update uit
                     update.run( function() {
-
+                        console.log("update succesvol uitgevoerd");
                     });
                 }
             }, function( err ) {
@@ -31,31 +33,40 @@ workflow.prototype = {
             });
     },
 
+    /**
+     * Scan de externe HDD en parse elke file. De metadata die per bestand verzameld is,
+     * wordt opgeslagen.
+     */
     metadata : function() {
+        // scan de directory
+        metadata.scan( config.metadata.folder, function(err, files) {
+            if(err) {
+                throw err;
+            }
 
+            metadata.parse( files )
+                .then( function( results ) {
+                    return metadata.gather( results );
+                })
+                .then( function( results ) {
+                    return metadata.save( results );
+                })
+                .then( function() {
+                    console.log('done!!');
+                }, function (error) {
+                    console.error(error);
+                });
+        } );
     }
 }
 
 
-/**
- *
+var w = new workflow();
+w.metadata();
 
-checkForUpdate : function() {
-
-    version.check()
-        .then( function( update ) {
-            if(update) {
-                // update is beschikbaar
-            }
-        }, function( err ) {
-
-        });
-}
+//w.update();
 
 
- */
-
-console.log( scheduler );
 
 /*
 scheduler.job( {
@@ -67,22 +78,3 @@ scheduler.job( {
 
 */
 
-console.log( update );
-
-/*
-update.download( config.update.location )
-    .then( function( data ) {
-        console.log("unzipping update..");
-        return update.unzip(data);
-    })
-    .then( function() {
-        console.log("begin met install....");
-        return update.install();
-    })
-    .then( function() {
-        console.log("update geinstalleerd!");
-    })
-    .progress( function( progress ) {
-        console.log( progress );
-    });
-*/

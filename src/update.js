@@ -10,25 +10,25 @@ var fs = require('fs-extra'),
  *
  * @type {{prepare: prepare, download: download, unzip: unzip, install: install, nodeInstall: nodeInstall, bowerInstall: bowerInstall, clean: clean}}
  */
-exports =  {
+exports.update = {
 
     /**
      * Voert de update in stappen uit. Het downloaden, uitpakken en het installeren.
      */
     run : function( callback ) {
         var update = this;
-        console.log(this);
+
         update.download( config.update.location )
             .then( function( data ) {
-                console.log("unzipping update..");
+                console.log("[UPDATE]: unzipping update..");
                 return update.unzip(data);
             })
             .then( function() {
-                console.log("begin met install....");
+                console.log("[UPDATE]: starting installation..");
                 return update.install();
             })
             .then( function() {
-                console.log("update geinstalleerd!");
+                console.log("[UPDATE]: update complete!");
                 callback();
             })
             .progress( function( progress ) {

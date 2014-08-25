@@ -13,6 +13,7 @@
     "async": "^0.9.0",
     "bower": "latest",
     "downloader": "^0.1.2",
+    "ffmpeg": "0.0.4",
     "fs-extra": "^0.10.0",
     "growly": "~1.1.1",
     "grunt": "latest",

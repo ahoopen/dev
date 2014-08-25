@@ -4,11 +4,7 @@ var fs = require('fs'),
     config = require('./config/config');
 
 
-var version = function() {
-
-};
-
-version.prototype = {
+exports.version = {
 
     /**
      * Haal de project configuratie op.
@@ -60,5 +56,3 @@ version.prototype = {
         return deferred.promise;
     }
 };
-
-exports.version = version;

@@ -1,4 +1,4 @@
-
+// mongo <dbname> --eval "db.dropDatabase()"
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
     Cache = require('../../cache');
@@ -8,17 +8,18 @@ var ObjectId = mongoose.SchemaTypes.ObjectId;
 var EpisodeSchema = new Schema( {
 	created : { type : Date, default : Date.now },
 	title 	: { type : String, required : true, index : true },
-	orginalTitle : { type : String, required : true },
+	orginalTitle : { type : String, required : false },
 	season 	: { type : Number, required : true, index : true },
 	number 	: { type : Number, required : true, index : true },
 	summary : { type : String },
-	screen	: { type : String }
+	screen	: { type : String },
+    location : { type : String }
 });
 
-EpisodeSchema.statics.hasEpisode = function(title, season, number) {
+EpisodeSchema.statics.hasEpisode = function(location, season, number) {
 	var promise = new mongoose.Promise;
 
-	this.find( { orginalTitle : title, season : season, number : number } )
+	this.find( { location : location, season : season, number : number } )
 	 .exec( function(err, result) {
 	 	if(err) {
 	 		promise.error( err );
@@ -208,16 +209,16 @@ ShowSchema.statics.getSeason = function( title, season) {
 /**
 *
 **/
-ShowSchema.statics.addEpisode = function(show, orginaleTitle, episode, callback) {
+ShowSchema.statics.addEpisode = function(show, episode, callback) {
 	var Episode = mongoose.model('Episode');
 
     var ep = new Episode( {
         title : episode.title,
-        orginalTitle : orginaleTitle,
         season : episode.season,
         number : episode.number,
-        summary : episode.overview,
-        screen : episode.screen
+        summary : episode.summary,
+        screen : episode.image,
+        location : episode.location
     });
     ep.save( function(err) {
         if(err) {
@@ -250,9 +251,9 @@ EpisodeSchema.pre('save', function(next, done) {
 				// nieuwe record ga door met opslaan
 				next();
 			} else {
-				//console.log( "bestaat al!");
-				//done();
-                next();
+				console.log( "SAVE: bestaat al!");
+				done();
+                //next();
 			}
 		});
 });

@@ -207,14 +207,14 @@ metadata.prototype = {
                             if(result) {
                                 Show.addEpisode(result[0], trimmedTitle, data.episode, callback);
                             } else {
-                                Cache.save(data.show.images.poster , data.show.title)
-                                    .then( function( location) {
+                                //Cache.save(data.show.title , data.show.title)
+                                //    .then( function( location) {
                                         // Maak de tv show aan
                                         Show.create( {
                                             title : data.show.title,
                                             summary : data.show.overview,
                                             genre : data.show.genres,
-                                            poster : location
+                                            poster : data.show.images.poster
                                         }).then( function(tvshow) {
                                             console.log( 'show created' );
                                             // tv show is aangemaakt, voeg daar nu de episode aan toe.
@@ -223,9 +223,9 @@ metadata.prototype = {
                                             console.log("Error: episode info kon niet opgehaald worden voor, ", data.show.title);
                                             callback();
                                         });
-                                    },function(err) {
+                                //    },function(err) {
 
-                                    });
+                                //    });
                             }
                         });
                         
@@ -327,14 +327,14 @@ metadata.prototype = {
 
 
 
-/*
 
      Show.getAllShows().then( function(data) {
-         // console.log( data );
 
-         Show.getSeason('Suits', 2).then(function (data) {
 
-             //console.log( data );
+
+         Show.getSeason('Californication', 1).then(function (data) {
+
+             console.log( data );
 
              for (var i = 0, len = data.episodes.length; i < len; i++) {
 
@@ -375,17 +375,17 @@ metadata.prototype = {
                     }, function(err) {
                         console.log(err);
                     });
-
+                */
              }
 
          });
 
      });
 
- */
 /*
 
-exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Breaking Bad', ['.mkv', '.mp4', '.avi'], function(err, files) {
+
+getFiles('/Volumes/Seagate Backup Plus Drive/Series/The Blacklist', ['.mkv', '.mp4', '.avi'], function(err, files) {
     if(err) {
         throw err;
     }
@@ -393,6 +393,7 @@ exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Breaking 
     totalFiles = (files) ? files.length : 0;
   
   console.log("Start met het indexeren van ", totalFiles, " bestanden.");
+
   var meta = new metadata();
   meta.parse(files);
 
@@ -402,7 +403,5 @@ exports.metadata = getFiles('/Volumes/Seagate Backup Plus Drive/Series/Breaking 
 
 });
 
+
 */
-
-
-

@@ -1,0 +1,32 @@
+ul {
+    margin-left: 50px;
+}
+
+.item {
+    float: left;
+    width: 288px;
+
+}
+
+.item img {
+    width: 288px;
+    height: 370px;
+}
+
+.item  img:hover {
+    border: 5px solid #000000;
+}
+
+.item:hover {
+    box-shadow : 0 0 20px rgba(0,0,0,.5);
+    -moz-box-shadow : 0 0 20px rgba(0,0,0,.5);
+    -webkit-box-shadow : 0 0 20px rgba(0,0,0,.5);
+
+    -webkit-transition-property : scale;
+    -webkit-transition-duration : 0.2s;
+    -webkit-transition-timing-function : ease-in-out;
+    -moz-transition : all 0.2s ease-in-out;
+
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+}

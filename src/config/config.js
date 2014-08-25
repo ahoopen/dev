@@ -32,5 +32,11 @@ module.exports = {
     schedule : {
         // tijd waarop er gekeken wordt of er een update beschikbaar is.
         update : "04:00"
+    },
+
+    metadata : {
+        folder : "/Users/auketenhoopen/dev/src/data",
+        //
+        extensions : ['.mkv', '.mp4', '.avi', 'mpeg', 'mov', 'wmv']
     }
 };

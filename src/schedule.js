@@ -1,7 +1,7 @@
 var schedule = require('node-schedule');
 
 
-exports = {
+exports.schedule = {
 
     /**
      * Maak een schedule job aan. De callback wordt aangeroepen wanneer

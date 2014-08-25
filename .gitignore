@@ -6,6 +6,7 @@ coverage
 reports
 src/public/vendor
 src/public/cache/*
+src/data/*
 
 ################
 # Webstorm
