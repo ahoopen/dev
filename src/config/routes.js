@@ -111,8 +111,8 @@ module.exports = function(app) {
 	});
 
 	app.post('/login', function(req, res){
+
 	  authenticate(req.body.username, req.body.password, function(err, user){
-		var session = req.session;
         var json = new API.JSONResponse();
 		
 		if(err || !user){
@@ -124,8 +124,8 @@ module.exports = function(app) {
             res.send(json);
 		}
 		else{
-			session.regenerate(function(){
-				session.user = user;
+            req.session.regenerate(function(){
+                req.session.user = user;
 
                 json.setStatus('success');
                 json.setPayload( {
