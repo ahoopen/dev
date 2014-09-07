@@ -129,10 +129,14 @@ module.exports = function(app) {
         response.sendfile( app.get('rootPath') + '/public/episodes.html');
     });
 
-    app.get('/seasonList', function(request, response) {
-        var json = new API.JSONResponse();
+    /**
+     *
+     */
+    app.post('/api/seasons/:title', function(request, response) {
+        var title = request.body.title,
+            json = new API.JSONResponse();
 
-        var ret = show.getAllSeasons('Suits')
+        var ret = show.getAllSeasons( title )
             .then( function(result) {
                 json.setStatus('success');
                 json.setPayload(result);

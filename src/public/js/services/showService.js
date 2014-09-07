@@ -34,7 +34,13 @@ angular.module('showService', [])
             },
 
             getAllSeasons : function( title ) {
-                return $http.get('seasonList');
+                return $http( {
+                    method : 'POST',
+                    url : 'api/seasons/' + title,
+                    data : {
+                        title : title
+                    }
+                });
             }
         };
     });

@@ -4,52 +4,61 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/landing.css">
 </head>
 <body ng-app="screenApp" ng-controller="Show">
 
-<br />
-<br />
-<br />
-<br />
 
+    <div class="movie-list">
 
-    <ul>
-        <li class="item">
-            <img src="/dexter.jpg" />
-        </li>
-        <li class="item">
-            <img src="/suits.jpg" />
-        </li>
-        <li class="item">
-            <img src="/homeland.jpg" />
-        </li>
-    </ul>
-
-<!--
-    <div class="row" ng-repeat="tvshow in shows">
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img width="242" height="200" ng-src="{{tvshow.poster}}" />
-                <div class="caption">
-                    <h3>{{tvshow.title}}</h3>
-                    <p>Suits follows college drop-out Mike Ross, who accidentally lands a job with one of New York's best legal closers, Harvey Specter. They soon become a winning team with Mike's raw talent and photographic memory, and Mike soon reminds Harvey of why he went into the field of law in the first place.</p>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
+        <div class="title-bar">
+            <div class="left">
+                <p class="bold">TV Shows</p>
+                <p class="grey">Action / Adventure</p>
+            </div>
+            <div class="right">
+                <a class="blue" href="#">Rating <i class="fa fa-angle-down"></i></a>
+                <a href="#">Newest</a>
+                <a href="#">Oldest</a>
             </div>
         </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img width="242" height="200" ng-src="{{tvshow.poster}}" />
-                <div class="caption">
-                    <h3>{{tvshow.title}}</h3>
-                    <p>Suits follows college drop-out Mike Ross, who accidentally lands a job with one of New York's best legal closers, Harvey Specter. They soon become a winning team with Mike's raw talent and photographic memory, and Mike soon reminds Harvey of why he went into the field of law in the first place.</p>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
-            </div>
-        </div>
+
+        <ul class="list">
+            <li ng-repeat="tvshow in shows" class="animated fadeInUp">
+                <img ng-src="{{tvshow.poster}}"/>
+                <p class="title">
+                    <a ng-click="getEpisodeList(tvshow.title, $event)"><span data-hover="{{tvshow.title}}">{{tvshow.title}}</span></a>
+                </p>
+                <p class="genre">{{tvshow.genre}}</p>
+            </li>
+
+            <!--
+            <li class="animated fadeInUp">
+                <img src="/suits.jpg"/>
+                <p class="title">
+                    <a href=""><span data-hover="Suits">Suits</span></a>
+                </p>
+                <p class="genre">Action</p>
+            </li>
+            <li class="animated fadeInUp">
+                <img src="/homeland.jpg"/>
+                <p class="title">
+                    <a href=""><span data-hover="Homeland">Homeland</span></a>
+                </p>
+                <p class="genre">Acion</p>
+            </li>
+            <li class="animated fadeInUp">
+                <img src="/dexter.jpg"/>
+                <p class="title">
+                    <a href=""><span data-hover="Dexter">Dexter</span></a>
+                </p>
+                <p class="genre">Acion, Crime</p>
+            </li>
+            -->
+        </ul>
+
     </div>
--->
 
     <script src="/vendor/angular/angular.min.js"></script>
     <script src="/vendor/angular-route/angular-route.min.js"></script>

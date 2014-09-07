@@ -10,4 +10,14 @@ angular.module('ShowController', []).
 
             });
 
+        $scope.getEpisodeList = function(tvshow, event) {
+
+            ShowService.getAllSeasons( tvshow )
+                .then( function( response) {
+                    console.log( response );
+                }, function( err) {
+
+                });
+        };
+
     }]);

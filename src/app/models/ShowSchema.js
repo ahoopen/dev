@@ -86,7 +86,8 @@ ShowSchema.statics.getShow = function(title) {
         promise.complete( {
         	title : result.title,
         	summary : result.summary,
-        	episodes : episodes
+        	episodes : episodes,
+            genres : result.genre
         } );
 	 });
 
@@ -102,7 +103,7 @@ ShowSchema.statics.getAllShows = function() {
 	var promise = new mongoose.Promise;
 
 	this.find()
-	 .select('title summary poster')
+	 .select('title summary genre poster')
 	 .exec( function(err, result) {
 	 	if(err) {
 	 		promise.error( err );

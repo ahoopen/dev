@@ -236,24 +236,31 @@ exports.metadata = {
 
     saveToDB : function( data, callback ) {
 
+        console.log( data.show.title, data.episode.title );
+
         Show.get( data.show.title, function(err, result) {
             if(result) {
                 Show.addEpisode(result[0], data.episode, callback);
             } else {
-                // Maak de tv show aan
-                var tvshow = Show.create( {
-                    title : data.show.title,
-                    summary : data.show.summary,
-                    genre : data.show.genres,
-                    poster : data.show.image
-                }).then( function(tvshow) {
-                    console.log( 'show created', tvshow );
-                    // tv show is aangemaakt, voeg daar nu de episode aan toe.
-                    Show.addEpisode(tvshow, data.episode, callback);
-                }, function(err) {
-                    console.log("Error: episode info kon niet opgehaald worden voor, ", data.show.title);
-                    callback();
-                });
+                // Sla de tv show poster op in de cache.
+                Cache.save( data.show.title, data.show.image )
+                    .then( function( image ) {
+                        // Maak de tv show aan
+                        var tvshow = Show.create( {
+                            title : data.show.title,
+                            summary : data.show.summary,
+                            genre : data.show.genres,
+                            poster : image.path
+                        }).then( function(tvshow) {
+                            // tv show is aangemaakt, voeg daar nu de episode aan toe.
+                            Show.addEpisode(tvshow, data.episode, callback);
+                        }, function(err) {
+                            console.log("Error: episode info kon niet opgehaald worden voor, ", data.show.title);
+                            callback();
+                        });
+                    }, function(err) {
+                        throw err;
+                    });
             }
         });
     },

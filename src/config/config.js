@@ -12,6 +12,10 @@ module.exports = {
         db: 'mongodb://localhost/test'
     },
 
+    server : {
+        port : 8080
+    },
+
     version : {
         file : "https://raw.github.com/ahoopen/dev/master/package.json"
     },

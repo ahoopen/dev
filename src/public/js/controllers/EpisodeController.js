@@ -2,14 +2,14 @@ angular.module('EpisodeController', [])
 
     .controller("EpisodeList", ['$scope', 'ShowService', function($scope, ShowService) {
 
-        ShowService.getAllSeasons('Game of Thrones')
+        ShowService.getAllSeasons('Californication')
             .then( function(result) {
                 $scope.seasons = createSeasonListing( result.data.response.data.seasons );
             }, function(err) {
 
             });
 
-        ShowService.getSeason('Game of Thrones', 1)
+        ShowService.getSeason('Californication', 1)
             .then( function( res ) {
                 $scope.episodes =  res.data.response.data.episodes;
             }, function(err) {

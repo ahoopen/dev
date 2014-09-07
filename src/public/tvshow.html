@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/show.css" />
+    <script src="js/modernizr.custom.js"></script>
+</head>
+<body ng-app="screenApp" ng-controller="EpisodeList">
+<div id="vs-container" class="vs-container">
+    <header class="vs-header">
+        <h1>Californication</h1>
+        <ul class="vs-nav">
+            <li><a href="#section-1">Seizoen 1</a></li>
+            <li><a href="#section-2">Seizoen 2</a></li>
+            <li><a href="#section-3">Seizoen 3</a></li>
+        </ul>
+    </header>
+    <div class="vs-wrapper">
+        <section id="section-1">
+            <div class="vs-content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet orci mi. Mauris accumsan nulla orci, a tempor enim placerat malesuada. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Duis ultricies purus vel sapien scelerisque, eget malesuada lacus laoreet. Pellentesque at purus et nunc lacinia mattis id ut orci. Integer vulputate turpis luctus lectus pellentesque, lobortis tempus odio tincidunt. In hac habitasse platea dictumst. Etiam magna metus, aliquet nec euismod id, convallis ut ante. Sed vehicula dolor quam. Cras tempus nunc est, quis euismod elit pellentesque et. Maecenas aliquam consectetur massa, at ullamcorper justo ultricies lobortis. Vestibulum sollicitudin arcu vel nulla pretium, eget mollis odio venenatis.
+            </div>
+        </section>
+        <section id="section-2">
+            <div class="vs-content">
+                <div class="media" ng-repeat="episode in episodes">
+                    <a href="#" class="pull-left">
+                        <img width="200" height="200" ng-src="{{episode.screen}}" class="img-thumbnail" />
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{episode.title}}</h4>
+                        <p>{{episode.summary}}</p>
+                    </div>
+                    <hr />
+                </div>
+             </div>
+        </section>
+        <section id="section-3">
+            <div class="vs-content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet orci mi. Mauris accumsan nulla orci, a tempor enim placerat malesuada. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Duis ultricies purus vel sapien scelerisque, eget malesuada lacus laoreet. Pellentesque at purus et nunc lacinia mattis id ut orci. Integer vulputate turpis luctus lectus pellentesque, lobortis tempus odio tincidunt. In hac habitasse platea dictumst. Etiam magna metus, aliquet nec euismod id, convallis ut ante. Sed vehicula dolor quam. Cras tempus nunc est, quis euismod elit pellentesque et. Maecenas aliquam consectetur massa, at ullamcorper justo ultricies lobortis. Vestibulum sollicitudin arcu vel nulla pretium, eget mollis odio venenatis.
+                Suspendisse odio turpis, tempor vitae massa nec, ullamcorper dignissim risus. Phasellus dictum iaculis sapien in ullamcorper. Quisque erat leo, pellentesque sit amet ante ut, semper vulputate odio. Fusce tempus nisi sollicitudin augue tristique condimentum vitae placerat nulla. Proin quis auctor dui, a pellentesque augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum varius quam auctor semper tincidunt. Proin sapien lacus, faucibus quis justo non, suscipit commodo turpis. Ut convallis at nisi eget dapibus. Suspendisse porta velit eget orci feugiat, nec viverra nisi semper. Proin iaculis neque malesuada orci tincidunt mollis. Vivamus mattis mollis gravida.
+            </div>
+        </section>
+    </div>
+    <script src="js/classie.js"></script>
+    <script src="js/hammer.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="/vendor/angular/angular.min.js"></script>
+    <script src="/vendor/angular-route/angular-route.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services/showService.js"></script>
+    <script src="js/controllers/EpisodeController.js"></script>
+</div>
+</body>
+</html>

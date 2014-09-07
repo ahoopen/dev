@@ -1,5 +1,5 @@
 angular.module('screenApp', [
-    //'ShowController',
-    'EpisodeController',
+    'ShowController',
+    //'EpisodeController',
     'showService'
 ]);

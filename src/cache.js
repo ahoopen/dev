@@ -46,7 +46,7 @@ exports.cache = {
      */
     save : function(folder, file) {
         var deferred = Q.defer(),
-            dir = 'cache/' + folder.replace(/ /g,"-"),
+            dir = 'public/cache/' + folder.replace(/ /g,"-"),
             filePath = dir + '/' + this.getFileName(file);
 
         // garandeer dat de directory bestaat.
@@ -67,7 +67,12 @@ exports.cache = {
                     if (err) {
                         deferred.reject(err);
                     }
-                    deferred.resolve( { path: filePath } );
+
+                    // public prefix verwijderen van het path.
+                    var paths = filePath.split('/');
+                    paths.shift();
+
+                    deferred.resolve( { path: paths.join('/') } );
                 });
             });
         });

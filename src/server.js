@@ -3,12 +3,12 @@ var express = require('express'),
 
 // laad configuraties
 var env = process.env.NODE_ENV || 'development',
-	config = require('./config/config')[env],
+	config = require('./config/config'),
 	mongoose = require('mongoose');
 
 var connect = function() {
 	var options = { server : { socketOptions: { keepAlive : 1 } } };
-	mongoose.connect( config.db, options );
+	mongoose.connect( config.development.db, options );
 };
 connect();
 
@@ -43,10 +43,20 @@ app.use(express.static(__dirname + '/public') );
 // boorstrap routes
 require('./config/routes')(app);
 
-var port = process.env.PORT || 8080;
-app.listen(port);
+var server = app.listen( config.server.port );
+var io = require('socket.io').listen(server);
 
-console.log('Server draait op poort ' + port);
+console.log('Server draait op poort ' +  config.server.port );
 app.set('rootPath', __dirname);
 
 exports = module.exports = app;
+
+io.sockets.on('connection', function ( socket ) {
+
+   var i = 0;
+   setInterval( function() {
+       socket.emit("download", i++);
+   }, 200);
+
+
+});
