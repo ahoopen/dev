@@ -100,6 +100,7 @@ ol, ul {
     font-style: normal;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
+    border: 2px solid #ebebeb;
 }
 
 .movie-list .list li img {
@@ -144,6 +145,7 @@ ol, ul {
     -webkit-transition: -webkit-transform 0.3s;
     -moz-transition: -moz-transform 0.3s;
     transition: transform 0.3s;
+    font-size: 24px;
 }
 
 .movie-list .list li .title a span::before {

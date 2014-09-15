@@ -1,6 +1,8 @@
-angular.module('EpisodeController', [])
+angular.module('EpisodeController', ['ngRoute'])
 
     .controller("EpisodeList", ['$scope', 'ShowService', function($scope, ShowService) {
+
+
 
         ShowService.getAllSeasons('Californication')
             .then( function(result) {

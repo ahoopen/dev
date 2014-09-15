@@ -16,7 +16,7 @@ angular.module('ShowController', []).
                 .then( function( response) {
                     console.log( response );
                 }, function( err) {
-
+                    console.log( err );
                 });
         };
 

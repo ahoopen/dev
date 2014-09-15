@@ -25,37 +25,13 @@
         </div>
 
         <ul class="list">
-            <li ng-repeat="tvshow in shows" class="animated fadeInUp">
+            <li ng-click="getEpisodeList(tvshow.title, $event)" ng-repeat="tvshow in shows" class="animated fadeInUp">
                 <img ng-src="{{tvshow.poster}}"/>
                 <p class="title">
-                    <a ng-click="getEpisodeList(tvshow.title, $event)"><span data-hover="{{tvshow.title}}">{{tvshow.title}}</span></a>
+                    <a><span data-hover="{{tvshow.title}}">{{tvshow.title}}</span></a>
                 </p>
                 <p class="genre">{{tvshow.genre}}</p>
             </li>
-
-            <!--
-            <li class="animated fadeInUp">
-                <img src="/suits.jpg"/>
-                <p class="title">
-                    <a href=""><span data-hover="Suits">Suits</span></a>
-                </p>
-                <p class="genre">Action</p>
-            </li>
-            <li class="animated fadeInUp">
-                <img src="/homeland.jpg"/>
-                <p class="title">
-                    <a href=""><span data-hover="Homeland">Homeland</span></a>
-                </p>
-                <p class="genre">Acion</p>
-            </li>
-            <li class="animated fadeInUp">
-                <img src="/dexter.jpg"/>
-                <p class="title">
-                    <a href=""><span data-hover="Dexter">Dexter</span></a>
-                </p>
-                <p class="genre">Acion, Crime</p>
-            </li>
-            -->
         </ul>
 
     </div>

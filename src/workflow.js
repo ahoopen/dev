@@ -58,7 +58,7 @@ workflow.prototype = {
                 });
         } );
     }
-}
+};
 
 
 var w = new workflow();

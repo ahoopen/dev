@@ -7,7 +7,7 @@ var show = require('../app/controllers/Show'),
 module.exports = function(app) {
 
 	app.get('/', function(request, response) {
-		response.sendfile( app.get('rootPath') + '/public/angular.html');
+		response.sendfile( app.get('rootPath') + '/public/show.html');
 	});
 
 	app.get('/api/user/all', function(request, response) {
@@ -121,13 +121,6 @@ module.exports = function(app) {
      *  API show requests
      */
 
-    app.get('/shows', function(request, response) {
-        response.sendfile( app.get('rootPath') + '/public/show.html');
-    });
-
-    app.get('/episodes', function(request, response) {
-        response.sendfile( app.get('rootPath') + '/public/episodes.html');
-    });
 
     /**
      *
